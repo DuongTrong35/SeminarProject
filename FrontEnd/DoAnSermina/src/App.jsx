@@ -11,6 +11,9 @@ import DirectionsPage from "./components/DirectionsPage";
 import DangNhap from "./components/DangNhap/Login";
 import Tcnd from "./components/NguoiDung/NguoiDung";
 import CuaHang from "./components/CuaHang/CuaHang";
+import TCCuaHang from "./components/CuaHang/TrangChuCH";
+import QLCuaHang from "./components/QuanTri/QuanLyCH";
+import TCadmin from "./components/QuanTri/TrangChuQT";
 
 import "./index.css";
 // import "bootstrap/dist/css/bootstrap.min.css";
@@ -58,6 +61,9 @@ function AppRouter() {
       <Route path="/login" element={<DangNhap />} />
       <Route path="/homeuse" element={<Tcnd />} />
       <Route path="/store" element={<CuaHang />} />
+      <Route path="/store/home" element={<TCCuaHang />} />
+      <Route path="/admin" element={<TCadmin />} />
+      <Route path="/admin/qlch" element={<QLCuaHang />} />
     </Routes>
   );
 }

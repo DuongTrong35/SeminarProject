@@ -1,6 +1,4 @@
 import "./Login.css";
-import teamLeft from "../../assets/images/team7na.png";
-import teamRight from "../../assets/images/team7bo.png";
 import logo from "../../assets/images/logodn.png";
 import mhdn from "../../assets/images/mhđn.jpg";
 import Navbar from "../Navbar";
@@ -14,44 +12,59 @@ function Login() {
   const [matkhau, setMatkhau] = useState("");
 
   const handleLogin = async (e) => {
-  e.preventDefault();
+    e.preventDefault();
 
-  try {
-    const response = await fetch("http://localhost:8080/login/xulydn", {
-      method: "POST",
-      headers: { "Content-Type": "application/x-www-form-urlencoded" },
-      body: new URLSearchParams({ taikhoan, matkhau }),
-    });
+    try {
+      const response = await fetch("http://localhost:8080/login/xulydn", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: new URLSearchParams({ taikhoan, matkhau }),
+      });
 
-    const text = await response.text();
-    console.log("Phản hồi từ server:", text);
+      const text = await response.text();
+      console.log("Phản hồi từ server:", text);
 
-    if (response.status === 401) {
-      alert("Sai tài khoản hoặc mật khẩu");
-      return;
+      if (response.status === 401) {
+        alert("Sai tài khoản hoặc mật khẩu");
+        return;
+      }
+
+      if (!response.ok) {
+        alert("Đăng nhập thất bại");
+        return;
+      }
+
+      const data = JSON.parse(text);
+
+      console.log("USER LOGIN:", data);
+
+      // ✅ FIX CHUẨN 100%
+      const user = {
+        id: data.id, // id bảng login
+        iduser: data.iduser, // 🔥 CÁI QUAN TRỌNG (dùng cho cửa hàng)
+        taikhoan: data.taikhoan,
+        role: data.role,
+      };
+
+      console.log("SAVE USER:", user);
+
+      // lưu localStorage
+      localStorage.setItem("user", JSON.stringify(user));
+
+      // điều hướng
+      if (user.role === "STORE") {
+        navigate("/store/home");
+      } else if (user.role === "ADMIN") {
+        navigate("/admin");
+      } else {
+        navigate("/homeuse");
+      }
+    } catch (error) {
+      console.error("Lỗi khi đăng nhập:", error);
+      alert("Lỗi kết nối server!");
     }
+  };
 
-    if (!response.ok) {
-      alert("Đăng nhập thất bại");
-      return;
-    }
-
-    const user = JSON.parse(text);
-
-    // rồi mới dùng
-    localStorage.setItem("user", JSON.stringify(user));
-
-    // phân quyền
-    if (user.role === "ADMIN") {
-      navigate("/store");
-    } else {
-      navigate("/homeuse");
-    }
-
-  } catch (error) {
-    console.error("Lỗi khi đăng nhập:", error);
-  }
-};
   return (
     <>
       <Navbar />
@@ -60,11 +73,6 @@ function Login() {
         className="Container d-flex align-items-center justify-content-center"
         style={{ backgroundImage: `url(${mhdn})` }}
       >
-        {/* Left */}
-        {/* <div className="PictureLeft">
-        <img src={teamLeft} alt="" />
-      </div> */}
-
         <div className="login-wrapper">
           <div className="card custom-card p-4">
             {/* Logo */}
@@ -118,11 +126,6 @@ function Login() {
             </form>
           </div>
         </div>
-
-        {/* Right */}
-        {/* <div className="PictureRight">
-        <img src={teamRight} alt="" />
-      </div> */}
       </div>
     </>
   );

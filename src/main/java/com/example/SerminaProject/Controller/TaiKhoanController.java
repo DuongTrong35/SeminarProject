@@ -39,8 +39,10 @@ public class TaiKhoanController {
             return ResponseEntity.status(401).body("Sai tài khoản hoặc mật khẩu");
         }
 
-        // ✅ chỉ trả dữ liệu cần thiết
+        // ✅ trả đầy đủ dữ liệu cần
         return ResponseEntity.ok(new Object() {
+            public final Integer id = user.getId();        // 🔥 THÊM
+            public final String iduser = user.getIduser();// 🔥 THÊM
             public final String taikhoan = user.getTaikhoan();
             public final String role = user.getRole();
         });

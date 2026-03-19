@@ -1,10 +1,12 @@
+/* ===== LAYOUT ===== */
 .cuahang-container {
   display: flex;
   min-height: 100vh;
-  font-family: Arial;
+  font-family: Arial, sans-serif;
+  background: #f1f5f9;
 }
 
-/* Sidebar */
+/* ===== SIDEBAR ===== */
 .cuahang-sidebar {
   width: 220px;
   background: #1e293b;
@@ -26,6 +28,7 @@
   text-align: center;
   line-height: 35px;
   margin-right: 10px;
+  font-weight: bold;
 }
 
 .cuahang-link {
@@ -33,6 +36,9 @@
   padding: 10px;
   color: white;
   text-decoration: none;
+  border-radius: 5px;
+  margin-bottom: 5px;
+  transition: 0.2s;
 }
 
 .cuahang-link:hover {
@@ -43,27 +49,82 @@
   background: #0ea5e9;
 }
 
-/* Main */
+/* ===== MAIN ===== */
 .cuahang-main {
   flex: 1;
   padding: 20px;
 }
 
-/* Actions */
-.cuahang-actions {
+/* ===== PROFILE CARD ===== */
+.profile-card {
   display: flex;
-  gap: 10px;
-  margin-bottom: 15px;
-  align-items: center;
+  gap: 20px;
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.08);
 }
 
-.cuahang-input {
-  padding: 5px;
+/* ===== IMAGE ===== */
+.profile-left {
+  width: 200px;
+  text-align: center;
+}
+
+/* .profile-left img {
+  width: 160px;
+  height: 160px;
+  object-fit: cover;
+  border-radius: 10px;
+  margin-bottom: 10px;
+  border: 2px solid #e5e7eb;
+} */
+.profile-left img {
+  width: 180px;
+  height: 180px;
+  border-radius: 12px;
+}
+.cuahang-btn.blue {
+  background: #3b82f6;
+  color: white;
+  padding: 10px 15px;
+  font-size: 16px;
+  margin-top: 15px;
+}
+
+/* ===== FORM ===== */
+.profile-right {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.profile-right label {
+  margin-top: 10px;
+  font-weight: 600;
+}
+
+.profile-right input,
+.profile-right textarea {
+  padding: 8px;
+  margin-top: 5px;
   border: 1px solid #ccc;
   border-radius: 5px;
+  outline: none;
+  transition: 0.2s;
 }
 
-/* Buttons */
+.profile-right input:focus,
+.profile-right textarea:focus {
+  border-color: #3b82f6;
+}
+
+.profile-right textarea {
+  min-height: 90px;
+  resize: none;
+}
+
+/* ===== BUTTON ===== */
 .cuahang-btn {
   padding: 6px 10px;
   border: none;
@@ -71,42 +132,60 @@
   cursor: pointer;
 }
 
-.cuahang-btn.blue {
-  background: #3b82f6;
-  color: white;
-}
-
-.cuahang-btn.green {
-  background: #22c55e;
-  color: white;
-}
-
 .cuahang-btn.red {
   background: #ef4444;
   color: white;
 }
 
-.cuahang-btn.small {
-  padding: 4px 6px;
+.btn-save {
+  margin-top: 15px;
+  padding: 10px;
+  background: #3b82f6;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: 0.2s;
 }
 
-/* Table */
-.cuahang-table {
-  width: 100%;
-  border-collapse: collapse;
+.btn-save:hover {
+  background: #2563eb;
 }
 
-.cuahang-table th,
-.cuahang-table td {
-  border: 1px solid #ddd;
-  padding: 8px;
-  text-align: center;
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+  .cuahang-sidebar {
+    display: none;
+  }
+
+  .profile-card {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .profile-left {
+    width: 100%;
+  }
+
+  .profile-right {
+    width: 100%;
+  }
+}
+.profile-view {
+  display: flex;
+  gap: 30px;              /* tăng khoảng cách */
+  background: white;
+  padding: 30px 40px;    /* 🔥 tăng padding cho to ra */
+  border-radius: 12px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.08);
 }
 
-.cuahang-table th {
-  background: #f1f5f9;
+.profile-view p {
+  margin: 15px 0;
+  font-size: 18px;      /* 🔥 chữ to hơn */
+  color: #1e293b;
 }
 
-.cuahang-table tr:hover {
-  background: #f9fafb;
+.profile-view b {
+  font-size: 19px;      /* tiêu đề đậm hơn */
 }
