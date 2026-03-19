@@ -14,6 +14,20 @@ public class TaiKhoanController {
     @Autowired
     private TaiKhoanService service;
 
+//    @PostMapping("/xulydn")
+//    public ResponseEntity<?> login(
+//            @RequestParam String taikhoan,
+//            @RequestParam String matkhau) {
+//
+//        TaiKhoan user = service.checkLogin(taikhoan, matkhau);
+//
+//        if (user == null) {
+//            return ResponseEntity.status(401).body("Sai tài khoản hoặc mật khẩu");
+//        }
+//
+//        return ResponseEntity.ok(user);
+//    }
+
     @PostMapping("/xulydn")
     public ResponseEntity<?> login(
             @RequestParam String taikhoan,
@@ -25,6 +39,10 @@ public class TaiKhoanController {
             return ResponseEntity.status(401).body("Sai tài khoản hoặc mật khẩu");
         }
 
-        return ResponseEntity.ok(user);
+        // ✅ chỉ trả dữ liệu cần thiết
+        return ResponseEntity.ok(new Object() {
+            public final String taikhoan = user.getTaikhoan();
+            public final String role = user.getRole();
+        });
     }
 }

@@ -18,6 +18,8 @@ public class TaiKhoan {
     @Column(name = "matkhau", length = 50, nullable = false)
     private String matkhau;
 
+    private String role; // "ADMIN" hoặc "USER"
+
     // Constructor rỗng (bắt buộc)
     public TaiKhoan() {
     }
@@ -53,5 +55,13 @@ public class TaiKhoan {
 
     public void setMatkhau(String matkhau) {
         this.matkhau = matkhau;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 }
