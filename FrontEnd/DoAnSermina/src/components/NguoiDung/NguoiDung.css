@@ -1,0 +1,76 @@
+
+
+/* Background toàn màn hình */
+.usercontainer {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  background: linear-gradient(135deg, #1e3c72, #2a5298);
+}
+
+/* Card chính */
+.card {
+  background: white;
+  padding: 40px 50px;
+  border-radius: 20px;
+  text-align: center;
+  max-width: 500px;
+  width: 90%;
+
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+/* Title */
+.card h1 {
+  font-size: 24px;
+  margin-bottom: 15px;
+  color: #333;
+}
+
+/* Mô tả */
+.card p {
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 30px;
+}
+
+/* Button group */
+.button-group {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+}
+
+/* Button chung */
+.btn {
+  padding: 12px 20px;
+  border: none;
+  border-radius: 10px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+/* Nút dùng thử */
+.trial {
+  background: #4caf50;
+  color: white;
+}
+
+.trial:hover {
+  background: #43a047;
+}
+
+/* Nút đăng ký */
+.register {
+  background: transparent;
+  border: 2px solid #2a5298;
+  color: #2a5298;
+}
+
+.register:hover {
+  background: #2a5298;
+  color: white;
+}

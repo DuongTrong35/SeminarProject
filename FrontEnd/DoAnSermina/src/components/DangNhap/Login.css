@@ -1,0 +1,97 @@
+/* ===== BACKGROUND ===== */
+.Container {
+  height: 100vh;
+  background-size: cover;
+  background-position: center;
+  position: relative;
+}
+
+/* Làm mờ nền */
+.Container::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+}
+
+/* ===== WRAPPER ===== */
+.login-wrapper {
+  position: relative;
+  z-index: 2;
+  /* width: 400px; */
+    width: 520px; /* 👈 sửa ở đây */
+
+}
+
+/* ===== CARD ===== */
+.custom-card {
+  background: #fff; /* 👈 TRẮNG */
+  border-radius: 20px;
+  position: relative;
+  z-index: 2;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    padding: 40px; /* 👈 thêm dòng này */
+
+}
+
+/* 👇 VIỀN GRADIENT (QUAN TRỌNG NHẤT) */
+.custom-card::before {
+  content: "";
+  position: absolute;
+  inset: -4px;
+  border-radius: 24px;
+  background: linear-gradient(135deg, #a855f7, #ef4444);
+  z-index: -1;
+}
+
+/* ===== INPUT ===== */
+.input-group-text {
+  background: #fff;
+  border-right: none;
+}
+
+.form-control {
+  border-left: none;
+  box-shadow: none !important;
+}
+
+.form-control:focus {
+  border-color: #3b82f6;
+}
+
+/* ===== BUTTON ===== */
+.btn-primary {
+  background: linear-gradient(45deg, #3b82f6, #2563eb);
+  border: none;
+  border-radius: 8px;
+  padding: 10px;
+}
+
+/* ===== ẢNH 2 BÊN ===== */
+.PictureLeft,
+.PictureRight {
+  position: absolute;
+  bottom: 0;
+  z-index: 2;
+}
+
+.PictureLeft {
+  left: 20px;
+}
+
+.PictureRight {
+  right: 20px;
+}
+
+.PictureLeft img,
+.PictureRight img {
+  width: 250px;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+  .PictureLeft,
+  .PictureRight {
+    display: none;
+  }
+}
