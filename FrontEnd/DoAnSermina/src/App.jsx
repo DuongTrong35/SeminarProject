@@ -14,6 +14,7 @@ import CuaHang from "./components/CuaHang/CuaHang";
 import TCCuaHang from "./components/CuaHang/TrangChuCH";
 import QLCuaHang from "./components/QuanTri/QuanLyCH";
 import TCadmin from "./components/QuanTri/TrangChuQT";
+import DanhSachGiongDoc from "./components/CuaHang/DanhSachGiongDoc";
 
 import "./index.css";
 // import "bootstrap/dist/css/bootstrap.min.css";
@@ -64,6 +65,7 @@ function AppRouter() {
       <Route path="/store/home" element={<TCCuaHang />} />
       <Route path="/admin" element={<TCadmin />} />
       <Route path="/admin/qlch" element={<QLCuaHang />} />
+      <Route path="/voice" element={<DanhSachGiongDoc />} />
     </Routes>
   );
 }
