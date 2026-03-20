@@ -5,6 +5,14 @@ import com.example.SerminaProject.Service.CuaHangService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import org.springframework.web.multipart.MultipartFile;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.UUID;
+
 import java.util.List;
 
 @RestController
@@ -50,4 +58,36 @@ public class CuaHangController {
     public List<CuaHang> search(@RequestParam String keyword) {
         return service.search(keyword);
     }
+
+    @PostMapping("/upload-image")
+    public String uploadImage(@RequestParam("file") MultipartFile file) {
+        if (file.isEmpty()) {
+            return "Lỗi: File rỗng";
+        }
+        try {
+            // Lấy tên file gốc và tạo tên mới để tránh trùng lặp
+            String originalFilename = file.getOriginalFilename();
+            String newFilename = UUID.randomUUID().toString() + "_" + originalFilename;
+
+            // Đường dẫn lưu file (lưu vào thư mục static/images của Spring Boot)
+            // Lưu ý: Cần tạo sẵn thư mục này trong project của bạn
+            String uploadDir = "src/main/resources/static/images/";
+            Path uploadPath = Paths.get(uploadDir);
+
+            if (!Files.exists(uploadPath)) {
+                Files.createDirectories(uploadPath);
+            }
+
+            byte[] bytes = file.getBytes();
+            Path path = Paths.get(uploadDir + newFilename);
+            Files.write(path, bytes);
+
+            // Trả về tên file để Frontend lưu vào Database (trường imageUrl)
+            return newFilename;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return "Lỗi khi upload file";
+        }
+    }
+
 }
