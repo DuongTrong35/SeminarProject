@@ -9,6 +9,7 @@ import java.nio.file.Paths;
 
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
+
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         // Trích xuất đường dẫn tuyệt đối (Absolute Path) của thư mục uploads trên máy

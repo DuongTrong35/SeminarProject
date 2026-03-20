@@ -1,0 +1,249 @@
+/* ===== RESET NHẸ ===== */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+}
+
+/* ===== LAYOUT ===== */
+.cuahang-container {
+  display: flex;
+  min-height: 100vh;
+  background: #f1f5f9;
+}
+
+/* ===== SIDEBAR ===== */
+.cuahang-sidebar {
+  width: 220px;
+  background: #1e293b;
+  color: white;
+  padding: 20px;
+}
+
+.cuahang-user {
+  display: flex;
+  align-items: center;
+  margin-bottom: 25px;
+}
+
+.cuahang-avatar {
+  background: #38bdf8;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  text-align: center;
+  line-height: 38px;
+  margin-right: 10px;
+  font-weight: bold;
+}
+
+/* LINK */
+.cuahang-link {
+  display: block;
+  padding: 10px;
+  color: white;
+  text-decoration: none;
+  border-radius: 6px;
+  margin-bottom: 6px;
+  transition: 0.2s;
+}
+
+.cuahang-link:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.cuahang-link.active {
+  background: #0ea5e9;
+}
+
+/* ===== MAIN ===== */
+.cuahang-main {
+  flex: 1;
+  padding: 30px;
+  background: linear-gradient(135deg, #dbeafe, #f8fafc);
+}
+
+/* ===== TITLE ===== */
+.cuahang-main h2 {
+  margin-bottom: 20px;
+  color: #1e293b;
+}
+
+/* ===== PROFILE VIEW (CĂN GIỮA) ===== */
+.profile-view {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 80vh;
+}
+
+/* ===== CARD ===== */
+.store-card {
+  display: flex;
+  gap: 50px;
+  width: 900px;
+  max-width: 100%;
+  background: white;
+  padding: 40px;
+  border-radius: 20px;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.12);
+  align-items: center;
+  transition: 0.3s;
+}
+
+.store-card:hover {
+  transform: scale(1.02);
+}
+
+/* ===== IMAGE ===== */
+.store-image img {
+  width: 280px;
+  height: 280px;
+  object-fit: cover;
+  border-radius: 20px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+}
+
+/* ===== INFO ===== */
+.store-info {
+  text-align: center;
+  flex: 1;
+}
+
+.store-info h1 {
+  font-size: 36px;
+  margin-bottom: 25px;
+  color: #0f172a;
+}
+
+/* ===== ITEM ===== */
+.store-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 18px;
+  font-size: 20px;
+  color: #334155;
+}
+
+.store-item span {
+  font-size: 24px;
+}
+
+/* ===== BUTTON ===== */
+.store-actions {
+  margin-top: 30px;
+  display: flex;
+  gap: 15px;
+}
+
+.btn {
+  width: 100%;
+  /* margin-left: 150px; */
+  padding: 12px 100px;
+  border: none;
+  border-radius: 10px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: 0.25s;
+  font-weight: 500;
+}
+
+.btn.back {
+  background: #ef4444;
+  color: white;
+}
+
+.btn.back:hover {
+  background: #dc2626;
+}
+
+.btn.edit {
+  background: #3b82f6;
+  color: white;
+}
+
+.btn.edit:hover {
+  background: #2563eb;
+}
+
+/* ===== FORM (EDIT) ===== */
+.profile-card {
+  display: flex;
+  gap: 30px;
+  background: white;
+  padding: 30px;
+  border-radius: 16px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+}
+
+.profile-left img {
+  width: 200px;
+  height: 200px;
+  border-radius: 12px;
+}
+
+/* FORM RIGHT */
+.profile-right {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.profile-right label {
+  margin-top: 12px;
+  font-weight: 600;
+}
+
+.profile-right input,
+.profile-right textarea {
+  padding: 10px;
+  margin-top: 5px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  outline: none;
+  transition: 0.2s;
+}
+
+.profile-right input:focus,
+.profile-right textarea:focus {
+  border-color: #3b82f6;
+}
+
+.profile-right textarea {
+  min-height: 100px;
+  resize: none;
+}
+
+/* SAVE BUTTON */
+.btn-save {
+  margin-top: 15px;
+  padding: 10px;
+  background: #3b82f6;
+  color: white;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+}
+
+.btn-save:hover {
+  background: #2563eb;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+  .cuahang-sidebar {
+    display: none;
+  }
+
+  .store-card {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .store-image img {
+    width: 100%;
+    height: auto;
+  }
+}
