@@ -22,7 +22,7 @@ import "./index.css";
 function Home() {
   return (
     <>
-          <Navbar />
+      <Navbar />
 
       <Hero />
       <FoodDirectory />

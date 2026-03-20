@@ -897,7 +897,7 @@ a {
 /* glassmorphism navbar */
 .navbar {
   backdrop-filter: blur(6px);
-  background: rgba(0, 0, 0, 0.9);
+  /* background: rgba(0, 0, 0, 0.9); */
   transition: background 0.3s, box-shadow 0.3s;
   position: sticky;
   top: 0;
