@@ -1,191 +1,130 @@
-/* ===== LAYOUT ===== */
-.cuahang-container {
-  display: flex;
-  min-height: 100vh;
-  font-family: Arial, sans-serif;
-  background: #f1f5f9;
-}
-
-/* ===== SIDEBAR ===== */
-.cuahang-sidebar {
-  width: 220px;
-  background: #1e293b;
-  color: white;
-  padding: 15px;
-}
-
-.cuahang-user {
-  display: flex;
-  align-items: center;
-  margin-bottom: 20px;
-}
-
-.cuahang-avatar {
-  background: #38bdf8;
-  width: 35px;
-  height: 35px;
-  border-radius: 50%;
-  text-align: center;
-  line-height: 35px;
-  margin-right: 10px;
-  font-weight: bold;
-}
-
-.cuahang-link {
-  display: block;
-  padding: 10px;
-  color: white;
-  text-decoration: none;
-  border-radius: 5px;
-  margin-bottom: 5px;
-  transition: 0.2s;
-}
-
-.cuahang-link:hover {
-  background: rgba(255, 255, 255, 0.1);
-}
-
-.cuahang-link.active {
-  background: #0ea5e9;
-}
-
-/* ===== MAIN ===== */
+/* Container chính */
 .cuahang-main {
   flex: 1;
-  padding: 20px;
-}
-
-/* ===== PROFILE CARD ===== */
-.profile-card {
-  display: flex;
-  gap: 20px;
-  background: white;
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0 5px 15px rgba(0,0,0,0.08);
-}
-
-/* ===== IMAGE ===== */
-.profile-left {
-  width: 200px;
-  text-align: center;
-}
-
-/* .profile-left img {
-  width: 160px;
-  height: 160px;
-  object-fit: cover;
-  border-radius: 10px;
-  margin-bottom: 10px;
-  border: 2px solid #e5e7eb;
-} */
-.profile-left img {
-  width: 180px;
-  height: 180px;
-  border-radius: 12px;
-}
-.cuahang-btn.blue {
-  background: #3b82f6;
-  color: white;
-  padding: 10px 15px;
-  font-size: 16px;
-  margin-top: 15px;
-}
-
-/* ===== FORM ===== */
-.profile-right {
-  flex: 1;
+  padding: 40px;
+  background-color: #f4f7fa;
   display: flex;
   flex-direction: column;
+  align-items: center; /* Căn giữa tất cả các phần tử con theo chiều ngang */
+  overflow-y: auto;
 }
 
-.profile-right label {
-  margin-top: 10px;
+.page-title {
+  font-size: 24px;
+  color: #333;
+  margin-bottom: 24px;
   font-weight: 600;
 }
 
-.profile-right input,
-.profile-right textarea {
-  padding: 8px;
-  margin-top: 5px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  outline: none;
-  transition: 0.2s;
-}
-
-.profile-right input:focus,
-.profile-right textarea:focus {
-  border-color: #3b82f6;
-}
-
-.profile-right textarea {
-  min-height: 90px;
-  resize: none;
-}
-
-/* ===== BUTTON ===== */
-.cuahang-btn {
-  padding: 6px 10px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-.cuahang-btn.red {
-  background: #ef4444;
-  color: white;
-}
-
-.btn-save {
-  margin-top: 15px;
-  padding: 10px;
-  background: #3b82f6;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: 0.2s;
-}
-
-.btn-save:hover {
-  background: #2563eb;
-}
-
-/* ===== RESPONSIVE ===== */
-@media (max-width: 768px) {
-  .cuahang-sidebar {
-    display: none;
-  }
-
-  .profile-card {
-    flex-direction: column;
-    align-items: center;
-  }
-
-  .profile-left {
-    width: 100%;
-  }
-
-  .profile-right {
-    width: 100%;
-  }
-}
-.profile-view {
-  display: flex;
-  gap: 30px;              /* tăng khoảng cách */
-  background: white;
-  padding: 30px 40px;    /* 🔥 tăng padding cho to ra */
+/* Khung Card chứa thông tin */
+.card-container {
+  background: #ffffff;
   border-radius: 12px;
-  box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+  padding: 30px;
+  max-width: 900px;
 }
 
-.profile-view p {
-  margin: 15px 0;
-  font-size: 18px;      /* 🔥 chữ to hơn */
-  color: #1e293b;
+/* Bố cục chia 2 cột */
+.profile-view, .profile-edit-form {
+  display: flex;
+  gap: 40px;
 }
 
-.profile-view b {
-  font-size: 19px;      /* tiêu đề đậm hơn */
+/* Cột Ảnh */
+.image-section {
+  flex: 0 0 300px; /* Cố định chiều rộng cột ảnh */
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.store-img {
+  width: 100%;
+  height: 300px;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 1px solid #e0e0e0;
+}
+
+/* Input File Custom */
+.custom-file-input {
+  padding: 10px;
+  border: 1px dashed #ccc;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+/* Cột Thông tin */
+.info-section {
+  flex: 1; /* Chiếm phần không gian còn lại */
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.info-group label, .form-group label {
+  font-size: 14px;
+  font-weight: 600;
+  color: #666;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 8px;
+  display: block;
+}
+
+.info-group p {
+  font-size: 16px;
+  color: #333;
+  margin: 0;
+  padding: 12px;
+  background: #f9f9f9;
+  border-radius: 6px;
+  border: 1px solid #eee;
+}
+
+.description-text {
+  min-height: 100px;
+}
+
+/* Các Input/Textarea Form */
+.form-control {
+  width: 100%;
+  padding: 12px 15px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  transition: border-color 0.3s;
+}
+
+.form-control:focus {
+  border-color: #0056b3;
+  outline: none;
+}
+
+.textarea-large {
+  min-height: 150px;
+  resize: vertical;
+}
+
+/* Buttons */
+.btn-edit, .btn-save, .btn-cancel {
+  padding: 12px 24px;
+  font-size: 16px;
+  font-weight: 600;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: opacity 0.3s;
+  width: fit-content;
+}
+
+.btn-edit { background: #0056b3; color: white; margin-top: 10px; }
+.btn-save { background: #28a745; color: white; }
+.btn-cancel { background: #dc3545; color: white; }
+
+.action-buttons {
+  display: flex;
+  gap: 15px;
+  margin-top: 20px;
 }

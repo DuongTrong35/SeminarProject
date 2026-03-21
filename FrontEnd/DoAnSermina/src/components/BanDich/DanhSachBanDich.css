@@ -1,0 +1,126 @@
+/* Container chính */
+.cuahang-main {
+  flex: 1;
+  padding: 40px;
+  background-color: #f4f7fa;
+}
+
+.page-title {
+  font-size: 24px;
+  color: #333;
+  margin-bottom: 24px;
+  font-weight: 600;
+}
+
+/* Khung Card chứa thông tin */
+.card-container {
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+  padding: 30px;
+  max-width: 900px;
+}
+
+/* Bố cục chia 2 cột */
+.profile-view, .profile-edit-form {
+  display: flex;
+  gap: 40px;
+}
+
+/* Cột Ảnh */
+.image-section {
+  flex: 0 0 300px; /* Cố định chiều rộng cột ảnh */
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.store-img {
+  width: 100%;
+  height: 300px;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 1px solid #e0e0e0;
+}
+
+/* Input File Custom */
+.custom-file-input {
+  padding: 10px;
+  border: 1px dashed #ccc;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+/* Cột Thông tin */
+.info-section {
+  flex: 1; /* Chiếm phần không gian còn lại */
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.info-group label, .form-group label {
+  font-size: 14px;
+  font-weight: 600;
+  color: #666;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 8px;
+  display: block;
+}
+
+.info-group p {
+  font-size: 16px;
+  color: #333;
+  margin: 0;
+  padding: 12px;
+  background: #f9f9f9;
+  border-radius: 6px;
+  border: 1px solid #eee;
+}
+
+.description-text {
+  min-height: 100px;
+}
+
+/* Các Input/Textarea Form */
+.form-control {
+  width: 100%;
+  padding: 12px 15px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  transition: border-color 0.3s;
+}
+
+.form-control:focus {
+  border-color: #0056b3;
+  outline: none;
+}
+
+.textarea-large {
+  min-height: 150px;
+  resize: vertical;
+}
+
+/* Buttons */
+.btn-edit, .btn-save, .btn-cancel {
+  padding: 12px 24px;
+  font-size: 16px;
+  font-weight: 600;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: opacity 0.3s;
+  width: fit-content;
+}
+
+.btn-edit { background: #0056b3; color: white; margin-top: 10px; }
+.btn-save { background: #28a745; color: white; }
+.btn-cancel { background: #dc3545; color: white; }
+
+.action-buttons {
+  display: flex;
+  gap: 15px;
+  margin-top: 20px;
+}

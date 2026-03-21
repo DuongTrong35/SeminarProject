@@ -9,9 +9,9 @@ import java.util.List;
 @Repository
 public interface CuaHangRepository extends JpaRepository<CuaHang, String> {
 
-    // ✅ sửa Integer -> String
+    // theo user
     List<CuaHang> findByIduser(String iduser);
 
-    // 🔥 Search theo tên
-    List<CuaHang> findByTenContaining(String keyword);
+    // 🔥 search không phân biệt hoa thường
+    List<CuaHang> findByTenContainingIgnoreCase(String keyword);
 }

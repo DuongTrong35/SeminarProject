@@ -1,6 +1,8 @@
 package com.example.SerminaProject.Model;
 
 import jakarta.persistence.*;
+import org.locationtech.jts.geom.Point;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "cuahang")
@@ -29,10 +31,23 @@ public class CuaHang {
     @Column(name = "TrangThai")
     private Integer trangThai;
 
+    @JsonIgnore
+    @Column(name = "toa_do", columnDefinition = "POINT")
+    private Point toaDo;
+
+    // 🔥 THÊM 2 BIẾN ẢO NÀY ĐỂ NHẬN/TRẢ DATA VỚI REACT
+    @Transient
+    private Double kinhDo;
+
+    @Transient
+    private Double viDo;
+
     public CuaHang() {}
 
     // ✅ sửa constructor
-    public CuaHang(String id, String iduser, String ten, String diaChi, String moTa, String imageUrl, Integer trangThai) {
+
+
+    public CuaHang(String id, String iduser, String ten, String diaChi, String moTa, String imageUrl, Integer trangThai, Point toaDo) {
         this.id = id;
         this.iduser = iduser;
         this.ten = ten;
@@ -40,6 +55,7 @@ public class CuaHang {
         this.moTa = moTa;
         this.imageUrl = imageUrl;
         this.trangThai = trangThai;
+        this.toaDo = toaDo;
     }
 
     public String getId() { return id; }
@@ -63,4 +79,20 @@ public class CuaHang {
 
     public Integer getTrangThai() { return trangThai; }
     public void setTrangThai(Integer trangThai) { this.trangThai = trangThai; }
+
+    public Point getToaDo() { return toaDo; }
+    public void setToaDo(Point toaDo) { this.toaDo = toaDo; }
+
+    public Double getKinhDo() {
+        // Nếu có gửi từ React lên thì dùng, không thì lấy từ Point trong DB trả về
+        if (this.kinhDo != null) return this.kinhDo;
+        return toaDo != null ? toaDo.getX() : null;
+    }
+    public void setKinhDo(Double kinhDo) { this.kinhDo = kinhDo; }
+
+    public Double getViDo() {
+        if (this.viDo != null) return this.viDo;
+        return toaDo != null ? toaDo.getY() : null;
+    }
+    public void setViDo(Double viDo) { this.viDo = viDo; }
 }
