@@ -14,6 +14,7 @@ import CuaHang from "./components/CuaHang/CuaHang";
 import TCCuaHang from "./components/CuaHang/TrangChuCH";
 import QLCuaHang from "./components/QuanTri/CuaHang/QuanLyCH";
 import TCadmin from "./components/QuanTri/TrangChuQT";
+import DanhSachBanDich from "./components/BanDich/DanhSachBanDich";
 import DanhSachGiongDoc from "./components/CuaHang/DanhSachGiongDoc";
 import XemchitietCH from "./components/QuanTri/CuaHang/XemChiTietCH";
 import AddCuaHang from "./components/QuanTri/CuaHang/AddCuaHang";
@@ -66,6 +67,7 @@ function AppRouter() {
       <Route path="/homeuse" element={<Tcnd />} />
       <Route path="/store" element={<CuaHang />} />
       <Route path="/store/home" element={<TCCuaHang />} />
+      <Route path="/store/bandich" element={<DanhSachBanDich />} />
       <Route path="/admin" element={<TCadmin />} />
       <Route path="/admin/qlch" element={<QLCuaHang />} />
       <Route path="/voice" element={<DanhSachGiongDoc />} />

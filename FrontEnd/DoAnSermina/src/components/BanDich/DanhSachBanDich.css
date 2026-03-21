@@ -3,10 +3,6 @@
   flex: 1;
   padding: 40px;
   background-color: #f4f7fa;
-  display: flex;
-  flex-direction: column;
-  align-items: center; /* Căn giữa tất cả các phần tử con theo chiều ngang */
-  overflow-y: auto;
 }
 
 .page-title {
