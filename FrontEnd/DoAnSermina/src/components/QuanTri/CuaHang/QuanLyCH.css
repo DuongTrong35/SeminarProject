@@ -1,0 +1,113 @@
+.cuahang-container {
+  display: flex;
+  min-height: 100vh;
+  font-family: Arial;
+}
+
+/* Sidebar */
+.cuahang-sidebar {
+  width: 220px;
+  background: #1e293b;
+  color: white;
+  padding: 15px;
+}
+
+.cuahang-user {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.cuahang-avatar {
+  background: #38bdf8;
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  text-align: center;
+  line-height: 35px;
+  margin-right: 10px;
+}
+
+.cuahang-link {
+  display: block;
+  padding: 10px;
+  color: white;
+  text-decoration: none;
+}
+
+.cuahang-link:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.cuahang-link.active {
+  background: #0ea5e9;
+}
+
+/* Main */
+.cuahang-main {
+  flex: 1;
+  padding: 20px;
+}
+
+/* Actions */
+.cuahang-actions {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 15px;
+  align-items: center;
+}
+
+.cuahang-input {
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+/* Buttons */
+.cuahang-btn {
+  padding: 6px 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.cuahang-btn.blue {
+  background: #3b82f6;
+  color: white;
+}
+
+.cuahang-btn.green {
+  background: #22c55e;
+  color: white;
+}
+
+.cuahang-btn.red {
+  background: #ef4444;
+  color: white;
+}
+
+.cuahang-btn.small {
+  padding: 4px 6px;
+}
+
+/* Table */
+.cuahang-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.cuahang-table th,
+.cuahang-table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: center;
+}
+
+.cuahang-table th {
+  background: #f1f5f9;
+}
+
+.cuahang-table tr:hover {
+  background: #f9fafb;
+}
+

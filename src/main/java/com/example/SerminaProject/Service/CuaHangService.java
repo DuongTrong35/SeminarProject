@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class CuaHangService {
@@ -13,24 +14,30 @@ public class CuaHangService {
     @Autowired
     private CuaHangRepository repository;
 
-    // 🔥 Lấy tất cả
+    // Lấy tất cả
     public List<CuaHang> getAll() {
         return repository.findAll();
     }
 
-    // 🔥 Thêm mới
+    // 🔥 THÊM MỚI (FIX ID Ở ĐÂY)
     public CuaHang add(CuaHang ch) {
+
+        // nếu chưa có id thì tự tạo
+        if (ch.getId() == null || ch.getId().isEmpty()) {
+            ch.setId(UUID.randomUUID().toString());
+        }
+
         return repository.save(ch);
     }
 
-    // 🔥 Xóa
+    // Xóa
     public void delete(String id) {
         repository.deleteById(id);
     }
 
-    // 🔥 Search
+    // 🔥 SEARCH XỊN HƠN
     public List<CuaHang> search(String keyword) {
-        return repository.findByTenContaining(keyword);
+        return repository.findByTenContainingIgnoreCase(keyword);
     }
 
 
@@ -44,8 +51,8 @@ public class CuaHangService {
     }
 
     // Sửa lại hàm update
+    // UPDATE
     public CuaHang update(String id, CuaHang ch) {
-        CuaHang old = repository.findById(id).orElse(null);
 
         if (old != null) {
             old.setTen(ch.getTen());
@@ -61,10 +68,27 @@ public class CuaHangService {
             return repository.save(old);
         }
         return null;
+        CuaHang old = repository.findById(id).orElse(null);
+
+        if (old == null) return null;
+
+        old.setTen(ch.getTen());
+        old.setDiaChi(ch.getDiaChi());
+        old.setMoTa(ch.getMoTa());
+        old.setImageUrl(ch.getImageUrl());
+        old.setTrangThai(ch.getTrangThai());
+        old.setIduser(ch.getIduser());
+
+        return repository.save(old);
     }
 
-    // ✅ sửa Integer -> String
+    // Lấy theo user
     public List<CuaHang> getByUser(String iduser) {
         return repository.findByIduser(iduser);
+    }
+
+    // Lấy theo ID
+    public CuaHang getById(String id) {
+        return repository.findById(id).orElse(null);
     }
 }

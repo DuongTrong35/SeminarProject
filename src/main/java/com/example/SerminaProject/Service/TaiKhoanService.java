@@ -25,4 +25,8 @@ public class TaiKhoanService {
         return repository.findByTaikhoanAndMatkhau(taikhoan, matkhau)
                 .orElse(null);
     }
+
+    public TaiKhoan dangKyTaiKhoan(TaiKhoan taiKhoan) {
+        return repository.save(taiKhoan); 
+    }
 }

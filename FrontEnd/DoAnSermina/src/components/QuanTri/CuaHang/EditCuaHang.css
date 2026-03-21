@@ -1,0 +1,76 @@
+/* CĂN GIỮA MAIN */
+.cuahang-main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* CARD FULL RỘNG */
+.add-card {
+  width: 100%;
+  max-width: 1100px;
+  background: #f8fafc;
+  padding: 30px;
+  border-radius: 16px;
+  box-shadow: 0 5px 25px rgba(0,0,0,0.1);
+}
+
+/* GRID 2 CỘT */
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+/* FULL WIDTH */
+.full {
+  grid-column: 1 / span 2;
+}
+
+/* FORM */
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group label {
+  margin-bottom: 5px;
+  font-weight: 500;
+}
+
+.form-group input,
+.form-group textarea,
+.form-group select {
+  padding: 12px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+}
+
+.form-group textarea {
+  min-height: 100px;
+}
+
+/* BUTTON */
+.form-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+
+.btn-cancel {
+  background: #ef4444;
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.btn-submit {
+  background: #3b82f6;
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 10px;
+  cursor: pointer;
+}

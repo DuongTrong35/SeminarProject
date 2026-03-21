@@ -12,9 +12,13 @@ import DangNhap from "./components/DangNhap/Login";
 import Tcnd from "./components/NguoiDung/NguoiDung";
 import CuaHang from "./components/CuaHang/CuaHang";
 import TCCuaHang from "./components/CuaHang/TrangChuCH";
-import QLCuaHang from "./components/QuanTri/QuanLyCH";
+import QLCuaHang from "./components/QuanTri/CuaHang/QuanLyCH";
 import TCadmin from "./components/QuanTri/TrangChuQT";
 import DanhSachBanDich from "./components/BanDich/DanhSachBanDich";
+import DanhSachGiongDoc from "./components/CuaHang/DanhSachGiongDoc";
+import XemchitietCH from "./components/QuanTri/CuaHang/XemChiTietCH";
+import AddCuaHang from "./components/QuanTri/CuaHang/AddCuaHang";
+import EditCuaHang from "./components/QuanTri/CuaHang/EditCuaHang";
 
 import "./index.css";
 // import "bootstrap/dist/css/bootstrap.min.css";
@@ -23,7 +27,7 @@ import "./index.css";
 function Home() {
   return (
     <>
-          <Navbar />
+      <Navbar />
 
       <Hero />
       <FoodDirectory />
@@ -66,6 +70,11 @@ function AppRouter() {
       <Route path="/store/bandich" element={<DanhSachBanDich />} />
       <Route path="/admin" element={<TCadmin />} />
       <Route path="/admin/qlch" element={<QLCuaHang />} />
+      <Route path="/voice" element={<DanhSachGiongDoc />} />
+      <Route path="/admin/qlch/:id" element={<XemchitietCH />} />
+      {/* <Route path="/cuahang/detail/:id" element={<XemchitietCH />} /> */}
+    <Route path="/admin/qlch/add" element={<AddCuaHang />} />
+    <Route path="/admin/qlch/edit/:id" element={<EditCuaHang />} />
     </Routes>
   );
 }
