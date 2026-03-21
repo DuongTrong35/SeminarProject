@@ -19,6 +19,9 @@ import DanhSachGiongDoc from "./components/CuaHang/DanhSachGiongDoc";
 import XemchitietCH from "./components/QuanTri/CuaHang/XemChiTietCH";
 import AddCuaHang from "./components/QuanTri/CuaHang/AddCuaHang";
 import EditCuaHang from "./components/QuanTri/CuaHang/EditCuaHang";
+import TCND from "./components/NguoiDung/TCNguoiDung";
+
+
 
 import "./index.css";
 // import "bootstrap/dist/css/bootstrap.min.css";
@@ -75,6 +78,8 @@ function AppRouter() {
       {/* <Route path="/cuahang/detail/:id" element={<XemchitietCH />} /> */}
     <Route path="/admin/qlch/add" element={<AddCuaHang />} />
     <Route path="/admin/qlch/edit/:id" element={<EditCuaHang />} />
+        <Route path="/tcnd" element={<TCND />} />
+
     </Routes>
   );
 }

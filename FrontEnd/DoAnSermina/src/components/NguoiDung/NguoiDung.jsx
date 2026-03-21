@@ -46,7 +46,7 @@ function NguoiDung() {
         <div className="container">
           <div className="logo">Vinh Khanh Food Tour</div>
           <ul className="menu">
-            <li><a href="#"><AiFillHome /> Home</a></li>
+            <li><a href="/tcnd"><AiFillHome /> Home</a></li>
             <li><a href="#food-directory"><GiKnifeFork /> Food</a></li>
             <li><a href="#"><FiVolume2 /> Audio Guide</a></li>
             {user ? (

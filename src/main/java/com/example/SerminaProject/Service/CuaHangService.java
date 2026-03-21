@@ -53,21 +53,6 @@ public class CuaHangService {
     // Sửa lại hàm update
     // UPDATE
     public CuaHang update(String id, CuaHang ch) {
-
-        if (old != null) {
-            old.setTen(ch.getTen());
-            old.setDiaChi(ch.getDiaChi());
-            old.setMoTa(ch.getMoTa());
-            old.setImageUrl(ch.getImageUrl());
-
-            // 🔥 Logic mới: Nếu React có gửi tọa độ lên, thì cập nhật Point mới!
-            if (ch.getKinhDo() != null && ch.getViDo() != null) {
-                old.setToaDo(createPoint(ch.getKinhDo(), ch.getViDo()));
-            }
-
-            return repository.save(old);
-        }
-        return null;
         CuaHang old = repository.findById(id).orElse(null);
 
         if (old == null) return null;
@@ -78,6 +63,11 @@ public class CuaHangService {
         old.setImageUrl(ch.getImageUrl());
         old.setTrangThai(ch.getTrangThai());
         old.setIduser(ch.getIduser());
+
+        // Nếu có tọa độ thì update
+        if (ch.getKinhDo() != null && ch.getViDo() != null) {
+            old.setToaDo(createPoint(ch.getKinhDo(), ch.getViDo()));
+        }
 
         return repository.save(old);
     }

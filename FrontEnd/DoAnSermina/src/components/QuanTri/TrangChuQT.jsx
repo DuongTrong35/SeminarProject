@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./TrangChuQT.css";
-
+import bannerqt from "../../assets/images/vinhkhanh.jpg";  
 const API_URL = "http://localhost:8080/api/cuahang";
 
 const navItems = [
@@ -96,7 +96,7 @@ function TrangChuQT() {
 
       {/* ===== MAIN (TRANG CHỦ) ===== */}
       <div className="cuahang-main home-banner">
-        <img src={store.hinhAnh} alt="banner" />
+        <img src={bannerqt} alt="banner" />
 
         <div className="home-overlay">
           <h1>{store.ten}</h1>
