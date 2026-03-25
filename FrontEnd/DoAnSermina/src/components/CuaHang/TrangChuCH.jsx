@@ -102,11 +102,18 @@ function TrangChuCH() {
 
           {/* Hiển thị ảnh cửa hàng cho đẹp */}
           <div style={{ display: "flex", justifyContent: "center" }}>
-              <img
-                src={store.imageUrl && store.imageUrl.startsWith("http") ? store.imageUrl : "https://placehold.co/600x300?text=Welcome+to+Store"}
-                alt="Welcome"
-                style={{ width: "100%", maxWidth: "600px", borderRadius: "12px", objectFit: "cover", height: "300px", boxShadow: "0 4px 15px rgba(0,0,0,0.1)" }}
-              />
+             <img
+  src={
+    store.imageUrl
+      ? store.imageUrl.startsWith("http")
+        ? store.imageUrl
+        : new URL(
+            `../../assets/images/Store/${store.imageUrl}`,
+            import.meta.url
+          ).href
+      : "https://placehold.co/600x300"
+  }
+/>
           </div>
         </div>
       </div>

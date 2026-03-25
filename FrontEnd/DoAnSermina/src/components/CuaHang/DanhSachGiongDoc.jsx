@@ -8,7 +8,7 @@ const API_URL = "http://localhost:8080/api/giongdoc";
 const navItems = [
   { to: "/store/home", label: "Trang chủ", icon: "🏠" },
   { to: "/store", label: "Thông tin cửa hàng", icon: "🏪" },
-  { to: "/employee", label: "Danh sách bản dịch", icon: "👨‍💻" },
+  { to: "/store/bandich", label: "Danh sách bản dịch", icon: "👨‍💻" },
   { to: "/voice", label: "Danh sách giọng đọc", icon: "🎤" },
   { to: "/thongke", label: "Thống kê", icon: "📊" },
 ];
