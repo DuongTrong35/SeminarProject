@@ -20,7 +20,9 @@ import XemchitietCH from "./components/QuanTri/CuaHang/XemChiTietCH";
 import AddCuaHang from "./components/QuanTri/CuaHang/AddCuaHang";
 import EditCuaHang from "./components/QuanTri/CuaHang/EditCuaHang";
 import TCND from "./components/NguoiDung/TCNguoiDung";
-
+import Mhad from "./components/QuanTri/Dashboard";
+import POIForm from "./components/POIForm";
+// import Dashboard from "./components/QuanTri/Dashboard";
 
 
 import "./index.css";
@@ -79,6 +81,8 @@ function AppRouter() {
     <Route path="/admin/qlch/add" element={<AddCuaHang />} />
     <Route path="/admin/qlch/edit/:id" element={<EditCuaHang />} />
         <Route path="/tcnd" element={<TCND />} />
+        <Route path="/mhad" element={<Mhad />} />
+        {/* <Route path="/mhtest" element={<Dashboard />} /> */}
 
     </Routes>
   );
