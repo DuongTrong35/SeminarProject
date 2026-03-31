@@ -2,46 +2,78 @@ import React, { useState } from "react";
 import "./Dashboard.css";
 import POIForm from "../QuanTri/POIForm";
 import POIFix from "../QuanTri/POIFix";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 function Dashboard() {
   const [pois, setPois] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
-const [isEditOpen, setIsEditOpen] = useState(false);
-const [editingPOI, setEditingPOI] = useState(null);
-  // ✅ HANDLE SAVE (CHỈ LẤY 3 FIELD)
-  const handleSave = (data) => {
-    const newPOI = {
-      id: Date.now(),
-      name: data.name,
-      category: data.category,
-      desc: data.description,
-      banner: data.banner,
-      lat: data.lat, // ✅ thêm
-      lng: data.lng, // ✅ thêm
-    };
+  const [isEditOpen, setIsEditOpen] = useState(false);
+  const [editingPOI, setEditingPOI] = useState(null);
+  const [user, setUser] = useState(null);
+  const navigate = useNavigate();
 
-    setPois((prev) => [newPOI, ...prev]);
-    setIsOpen(false);
+  useEffect(() => {
+    const storedUser = localStorage.getItem("user");
+
+    if (!storedUser) {
+      navigate("/login");
+    } else {
+      setUser(JSON.parse(storedUser));
+    }
+  }, []);
+  const getAvatarColor = (name) => {
+    const colors = [
+      "#FF6B6B",
+      "#4ECDC4",
+      "#45B7D1",
+      "#FFA07A",
+      "#A29BFE",
+      "#FD79A8",
+    ];
+    if (!name) return colors[0];
+
+    const index = name.charCodeAt(0) % colors.length;
+    return colors[index];
   };
-const handleUpdate = (data) => {
-  setPois((prev) =>
-    prev.map((p) =>
-      p.id === editingPOI.id
-        ? {
-            ...p,
-            name: data.name,
-            category: data.category,
-            desc: data.description,
-            lat: data.lat,
-            lng: data.lng,
-            banner: data.banner,
-          }
-        : p
-    )
-  );
+  const handleLogout = () => {
+    localStorage.removeItem("user");
+    navigate("/login");
+  };
+  const handleSave = (data) => {
+  const newPOI = {
+    id: data.id,
+    name: data.ten,
+    category: data.danhmuc,
+    desc: data.moTa,
+    banner: data.imageBanner
+      ? `http://localhost:8080/uploads/${data.imageBanner}`
+      : null,
+    lat: data.lat,
+    lng: data.lng,
+  };
 
-  setIsEditOpen(false);
-  setEditingPOI(null);
+  setPois((prev) => [newPOI, ...prev]);
 };
+  const handleUpdate = (data) => {
+    setPois((prev) =>
+      prev.map((p) =>
+        p.id === editingPOI.id
+          ? {
+              ...p,
+              name: data.name,
+              category: data.category,
+              desc: data.description,
+              lat: data.lat,
+              lng: data.lng,
+              banner: data.banner,
+            }
+          : p
+      )
+    );
+
+    setIsEditOpen(false);
+    setEditingPOI(null);
+  };
   return (
     <div className="poi-layout">
       {/* SIDEBAR */}
@@ -61,8 +93,23 @@ const handleUpdate = (data) => {
         </div>
 
         <div className="sidebar-user">
-          <div className="avatar">A</div>
-          <span>Admin</span>
+          <div
+            className="avatar"
+            style={{
+              backgroundColor: getAvatarColor(user?.taikhoan),
+            }}
+          >
+            {user?.taikhoan?.charAt(0).toUpperCase()}
+          </div>
+
+          <div className="user-info">
+            <span className="username">{user?.taikhoan}</span>
+            <small className="role">{user?.role}</small>
+          </div>
+
+          <button className="logout-btn" onClick={handleLogout}>
+            ⏻
+          </button>
         </div>
       </div>
 
@@ -78,7 +125,6 @@ const handleUpdate = (data) => {
             + Thêm POI mới
           </button>
         </div>
-
         {/* GRID */}
         <div className="grid">
           {pois.map((poi) => (
@@ -86,36 +132,36 @@ const handleUpdate = (data) => {
               {/* IMAGE giả */}
               <div className="card-img">
                 {poi.banner ? (
-                  <img src={poi.banner} alt="" className="card-image" />
-                ) : (
-                  <div className="img-placeholder" />
-                )}
-
-                <span className="badge">Điểm chính</span>
+  <img src={poi.banner} className="card-image" />
+) : (
+  <div className="img-placeholder" />
+)}
+                <span className="badge">{poi.category}</span>{" "}
               </div>
 
               {/* CONTENT */}
-             <div className="card-body">
-  <h3>{poi.name}</h3>
-  <p className="desc">{poi.desc}</p>
+              <div className="card-body">
+                <h3>{poi.name}</h3>
+                <p className="desc">{poi.desc}</p>
 
-  <p className="latlng-text">
-    📍 {poi.lat}, {poi.lng}
-  </p>
+                <p className="latlng-text">
+                  📍 {poi.lat}, {poi.lng}
+                </p>
 
-  {/* ✅ ACTION BUTTONS */}
-  <div className="card-actions">
-<button
-  className="icon-btn edit-btn"
-  onClick={() => {
-    setEditingPOI(poi);
-    setIsEditOpen(true);
-  }}
->
-  ✏️
-</button>    <button className="icon-btn delete-btn">🗑️</button>
-  </div>
-</div>
+                {/* ✅ ACTION BUTTONS */}
+                <div className="card-actions">
+                  <button
+                    className="icon-btn edit-btn"
+                    onClick={() => {
+                      setEditingPOI(poi);
+                      setIsEditOpen(true);
+                    }}
+                  >
+                    ✏️
+                  </button>{" "}
+                  <button className="icon-btn delete-btn">🗑️</button>
+                </div>
+              </div>
             </div>
           ))}
         </div>
@@ -128,11 +174,11 @@ const handleUpdate = (data) => {
         onSave={handleSave}
       />
       <POIFix
-  isOpen={isEditOpen}
-  onClose={() => setIsEditOpen(false)}
-  onSave={handleUpdate}
-  poi={editingPOI}
-/>
+        isOpen={isEditOpen}
+        onClose={() => setIsEditOpen(false)}
+        onSave={handleUpdate}
+        poi={editingPOI}
+      />
     </div>
   );
 }

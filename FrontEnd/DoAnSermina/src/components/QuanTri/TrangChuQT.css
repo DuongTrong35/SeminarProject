@@ -56,3 +56,77 @@
 
   text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.7);
 }
+
+/* center */
+.center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+/* ===== HOME BANNER ===== */
+.home-banner {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* ảnh */
+.home-banner img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* lớp tối */
+.home-banner::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 1;
+}
+
+/* overlay */
+.home-overlay {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  color: white;
+  text-align: center;
+  z-index: 2;
+
+  width: 90%;
+  max-width: 800px;
+}
+
+/* tiêu đề */
+.home-overlay h1 {
+  font-size: 48px;
+  margin-bottom: 10px;
+}
+
+/* text */
+.home-overlay p {
+  font-size: 18px;
+  margin: 5px 0;
+}
+
+/* extra info */
+.extra-info {
+  margin-top: 20px;
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.extra-info span {
+  background: rgba(255,255,255,0.2);
+  padding: 8px 15px;
+  border-radius: 20px;
+}

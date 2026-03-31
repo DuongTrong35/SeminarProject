@@ -1,8 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-// Nhớ check lại đường dẫn import api cho đúng với vị trí file của bạn nhé (../ hoặc ../../)
 import { api } from "../ApiFunctions";
-import "./CuaHang.css"; // Dùng chung CSS với file CuaHang.jsx để lấy giao diện Sidebar
+import "./CuaHang.css";
 
 const navItems = [
   { to: "/store/home", label: "Trang chủ", icon: "🏠" },
@@ -18,48 +17,64 @@ function TrangChuCH() {
 
   const [user, setUser] = useState(null);
   const [store, setStore] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-  // 1. Kiểm tra đăng nhập
+  // ===== CHECK LOGIN =====
   useEffect(() => {
     const data = JSON.parse(localStorage.getItem("user"));
+
     if (!data || !data.id) {
       navigate("/login");
       return;
     }
+
     setUser(data);
   }, [navigate]);
 
-  // 2. Lấy thông tin cửa hàng
+  // ===== LOAD STORE =====
   useEffect(() => {
     if (!user) return;
 
     api.get(`/api/cuahang/user/${user.id}`)
       .then((res) => {
-        const data = res.data[0];
-        setStore(data);
+        if (res.data && res.data.length > 0) {
+          setStore(res.data[0]);
+        } else {
+          setStore(null);
+        }
       })
-      .catch((err) => console.error("Lỗi load cửa hàng:", err));
+      .catch((err) => console.error("Lỗi load cửa hàng:", err))
+      .finally(() => setLoading(false));
   }, [user]);
 
+  // ===== LOGOUT =====
   const handleLogout = () => {
     localStorage.removeItem("user");
     navigate("/login");
   };
 
-  // 3. Màn hình chờ (Tránh lỗi undefined như ban nãy)
-  if (!store) {
-      return (
-        <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100vh" }}>
-            <h2>Đang tải dữ liệu trang chủ... ⏳</h2>
-        </div>
-      );
+  // ===== LOADING =====
+  if (loading) {
+    return (
+      <div className="center">
+        <h2>Đang tải dữ liệu... ⏳</h2>
+      </div>
+    );
   }
 
-  // 4. GIAO DIỆN CHÍNH (Đã khôi phục Sidebar)
+  // ===== NO STORE =====
+  if (!store) {
+    return (
+      <div className="center">
+        <h2>Bạn chưa có cửa hàng nào 😢</h2>
+      </div>
+    );
+  }
+
   return (
     <div className="cuahang-container">
 
-      {/* SIDEBAR DÙNG CHUNG */}
+      {/* ===== SIDEBAR ===== */}
       <aside className="cuahang-sidebar">
         <div className="cuahang-user">
           <div className="cuahang-avatar">
@@ -78,46 +93,49 @@ function TrangChuCH() {
           </Link>
         ))}
 
-        <button className="cuahang-btn red" onClick={handleLogout} style={{marginTop: 'auto'}}>
+        <button className="cuahang-btn red" onClick={handleLogout}>
           Đăng xuất
         </button>
       </aside>
 
-      {/* KHUNG NỘI DUNG BÊN PHẢI (MAIN) */}
+      {/* ===== MAIN ===== */}
       <div className="cuahang-main">
-        <div style={{ width: "100%", maxWidth: "1100px", marginBottom: "25px" }}>
-          <h2 className="page-title" style={{ textAlign: "left", width: "100%", margin: 0 }}>
-            Trang chủ Quản lý POI
-          </h2>
-        </div>
 
-        <div className="card-container" style={{ textAlign: "center", padding: "60px 20px" }}>
-          <h1 style={{ color: "#0056b3", fontSize: "32px", marginBottom: "20px" }}>
-            Chào mừng trở lại, {store.ten}! 🎉
+        <h2 className="page-title">Trang chủ Quản lý POI</h2>
+
+        <div className="card-container">
+
+          <h1 className="welcome-title">
+            👋 Chào mừng, {store.ten}
           </h1>
 
-          <p style={{ fontSize: "18px", color: "#555", marginBottom: "40px" }}>
-            Hôm nay bạn muốn quản lý thông tin gì? Hãy chọn các chức năng ở menu bên trái nhé.
+          <p className="welcome-desc">
+            Hôm nay bạn muốn quản lý gì? Chọn menu bên trái nhé.
           </p>
 
-          {/* Hiển thị ảnh cửa hàng cho đẹp */}
-          <div style={{ display: "flex", justifyContent: "center" }}>
-             <img
-  src={
-    store.imageUrl
-      ? store.imageUrl.startsWith("http")
-        ? store.imageUrl
-        : new URL(
-            `../../assets/images/Store/${store.imageUrl}`,
-            import.meta.url
-          ).href
-      : "https://placehold.co/600x300"
-  }
-/>
+          {/* ===== ROW ẢNH + INFO ===== */}
+          <div className="content-row">
+
+            {/* ẢNH */}
+            <img
+              src={`/images/Store/${store.imageThumbnail}`}
+              alt="Ảnh cửa hàng"
+              className="store-image"
+            />
+
+            {/* THÔNG TIN */}
+            <div className="info-box" style={{textAlign:"center"}} >
+              <p>📍 <b>Địa chỉ:</b> {store.diaChi}</p>
+              <p>📂 <b>Danh mục:</b> {store.danhmuc}</p>
+              <p>🌐 <b>Ngôn ngữ:</b> {store.ngonngu}</p>
+              <p>📏 <b>Bán kính:</b> {store.bankinh} m</p>
+              <p>📌 <b>Tọa độ:</b> {store.lat}, {store.lng}</p>
+            </div>
+
           </div>
+
         </div>
       </div>
-
     </div>
   );
 }

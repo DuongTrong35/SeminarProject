@@ -18,7 +18,7 @@ L.Icon.Default.mergeOptions({
   shadowUrl: markerShadow,
 });
 
-// FULL languages (giống hình)
+// Languages
 const ALL_LANGUAGES = [
   "Vietnamese", "English", "Spanish", "French",
   "German", "Italian", "Portuguese", "Russian",
@@ -42,7 +42,9 @@ function MapClick({ setForm }) {
   return null;
 }
 
+// Initial form
 const initialForm = {
+  id: "", // ✅ MÃ CỬA HÀNG
   name: "",
   category: "",
   description: "",
@@ -56,10 +58,9 @@ const initialForm = {
   thumbnailPreview: null,
   bannerPreview: null,
 };
-function POIForm({ isOpen, onClose, onSave }) {
-  
-  const mapRef = useRef(null);
 
+function POIForm({ isOpen, onClose, onSave }) {
+  const mapRef = useRef(null);
   const [form, setForm] = useState(initialForm);
 
   useEffect(() => {
@@ -67,11 +68,11 @@ function POIForm({ isOpen, onClose, onSave }) {
       setTimeout(() => mapRef.current.invalidateSize(), 300);
     }
   }, [isOpen]);
-useEffect(() => {
-  if (isOpen) {
-    setForm(initialForm);
-  }
-}, [isOpen]);
+
+  useEffect(() => {
+    if (isOpen) setForm(initialForm);
+  }, [isOpen]);
+
   if (!isOpen) return null;
 
   const handleChange = (e) => {
@@ -91,16 +92,78 @@ useEffect(() => {
     });
   };
 
-const handleSubmit = () => {
-  onSave({
-    name: form.name,
-    category: form.category,
-    description: form.description,
-    banner: form.bannerPreview,
-    lat: form.lat,   // ✅ thêm
-    lng: form.lng,   // ✅ thêm
-  });
-};
+  const handleSubmit = async () => {
+    try {
+      let thumbnailName = "";
+      let bannerName = "";
+
+      // upload thumbnail
+      if (form.thumbnail) {
+        const fd = new FormData();
+        fd.append("file", form.thumbnail);
+
+        const res = await fetch("http://localhost:8080/api/cuahang/upload-image", {
+          method: "POST",
+          body: fd,
+        });
+
+        thumbnailName = await res.text();
+      }
+
+      // upload banner
+      if (form.banner) {
+        const fd = new FormData();
+        fd.append("file", form.banner);
+
+        const res = await fetch("http://localhost:8080/api/cuahang/upload-image", {
+          method: "POST",
+          body: fd,
+        });
+
+        bannerName = await res.text();
+      }
+
+      const user = JSON.parse(localStorage.getItem("user"));
+
+      const response = await fetch("http://localhost:8080/api/cuahang", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          id: form.id || null, // ✅ QUAN TRỌNG
+          iduser: user?.iduser,
+          ten: form.name,
+          danhmuc: form.category,
+          diaChi: form.address,
+          moTa: form.description,
+          bankinh: parseInt(form.radius),
+          lat: parseFloat(form.lat),
+          lng: parseFloat(form.lng),
+          ngonngu: form.languages.join(","),
+          imageThumbnail: thumbnailName,
+          imageBanner: bannerName,
+          trangThai: 1,
+        }),
+      });
+
+      if (!response.ok) {
+        alert("Lưu thất bại!");
+        return;
+      }
+
+      const data = await response.json();
+
+      alert("Thêm POI thành công!");
+
+      onSave(data);
+      onClose();
+
+    } catch (err) {
+      console.error(err);
+      alert("Lỗi khi lưu!");
+    }
+  };
 
   return (
     <div className="modal-overlay">
@@ -116,20 +179,30 @@ const handleSubmit = () => {
 
           {/* LEFT */}
           <div className="left">
+
+            {/* ✅ MÃ CỬA HÀNG */}
+            <label>Mã cửa hàng</label>
+            <input
+              name="id"
+              value={form.id}
+              placeholder="VD: CH001"
+              onChange={handleChange}
+            />
+
             <label>Tên POI</label>
-            <input name="name" onChange={handleChange} />
+            <input name="name" value={form.name} onChange={handleChange} />
 
             <label>Danh mục</label>
-            <input name="category" onChange={handleChange} />
+            <input name="category" value={form.category} onChange={handleChange} />
 
             <label>Mô tả</label>
-            <textarea name="description" onChange={handleChange} />
+            <textarea name="description" value={form.description} onChange={handleChange} />
 
             <label>Địa chỉ</label>
-            <input name="address" onChange={handleChange} />
+            <input name="address" value={form.address} onChange={handleChange} />
 
             <label>Bán kính</label>
-            <input name="radius" onChange={handleChange} />
+            <input name="radius" value={form.radius} onChange={handleChange} />
           </div>
 
           {/* RIGHT */}
@@ -141,7 +214,7 @@ const handleSubmit = () => {
                 center={[parseFloat(form.lat), parseFloat(form.lng)]}
                 zoom={16}
                 whenReady={(map) => (mapRef.current = map.target)}
-                style={{height:'284px'}}
+                style={{ height: "284px" }}
               >
                 <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
                 <Marker position={[form.lat, form.lng]} />
@@ -205,9 +278,7 @@ const handleSubmit = () => {
                   <button onClick={() => setForm(prev => ({
                     ...prev,
                     languages: ALL_LANGUAGES
-                  }))}
-                  style={{ marginRight: "36px" }}
-                  >
+                  }))}>
                     Chọn tất cả
                   </button>
 

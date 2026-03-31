@@ -2,15 +2,12 @@ import { useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./TrangChuQT.css";
-import bannerqt from "../../assets/images/vinhkhanh.jpg";  
+
 const API_URL = "http://localhost:8080/api/cuahang";
 
 const navItems = [
   { to: "/admin", label: "Trang chủ", icon: "🏠" },
   { to: "/admin/qlch", label: "Quản lý cửa hàng", icon: "🏪" },
-//   { to: "/employee", label: "Danh sách bản dịch", icon: "👨‍💻" },
-//   { to: "/voice", label: "Danh sách giọng đọc", icon: "🎤" },
-//   { to: "/thongke", label: "Thống kê", icon: "📊" },
 ];
 
 function TrangChuQT() {
@@ -19,8 +16,9 @@ function TrangChuQT() {
 
   const [user, setUser] = useState(null);
   const [store, setStore] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-  // ===== LOAD USER =====
+  // ===== CHECK LOGIN =====
   useEffect(() => {
     const data = JSON.parse(localStorage.getItem("user"));
 
@@ -31,30 +29,24 @@ function TrangChuQT() {
     }
 
     setUser(data);
-  }, []);
+  }, [navigate]);
 
   // ===== LOAD STORE =====
   useEffect(() => {
     if (!user) return;
 
     axios
-      .get(`${API_URL}/user/${user.id}`)
+      .get(API_URL) // admin lấy tất cả
       .then((res) => {
-        const data = res.data[0];
-
-        setStore({
-          ten: data.ten,
-          diaChi: data.diaChi,
-          moTa: data.moTa,
-          hinhAnh: data.imageUrl
-            ? `/src/assets/images/Store/${data.imageUrl}`
-            : "https://placehold.co/1200x600",
-        });
+        if (res.data.length > 0) {
+          setStore(res.data[0]); // lấy đại cái đầu
+        }
       })
       .catch((err) => {
         console.error(err);
         alert("Không load được dữ liệu!");
-      });
+      })
+      .finally(() => setLoading(false));
   }, [user]);
 
   const handleLogout = () => {
@@ -62,15 +54,17 @@ function TrangChuQT() {
     navigate("/login");
   };
 
-  if (!store) return <p>Đang tải...</p>;
+  if (loading) return <div className="center">Đang tải...</div>;
+  if (!store) return <div className="center">Không có dữ liệu</div>;
 
   return (
     <div className="cuahang-container">
-      {/* ===== SIDEBAR ===== */}
+
+      {/* SIDEBAR */}
       <aside className="cuahang-sidebar">
         <div className="cuahang-user">
           <div className="cuahang-avatar">
-            {user?.taikhoan?.[0] || "A"}
+            {user?.taikhoan?.[0]?.toUpperCase() || "A"}
           </div>
           <div>{user?.taikhoan}</div>
         </div>
@@ -94,15 +88,29 @@ function TrangChuQT() {
         </button>
       </aside>
 
-      {/* ===== MAIN (TRANG CHỦ) ===== */}
+      {/* MAIN */}
       <div className="cuahang-main home-banner">
-        <img src={bannerqt} alt="banner" />
 
+        {/* ẢNH BACKGROUND */}
+        <img
+          src={`/images/Store/${store.imageBanner || store.imageThumbnail}`}
+          alt="banner"
+        />
+
+        {/* OVERLAY */}
         <div className="home-overlay">
           <h1>{store.ten}</h1>
-          <p>{store.diaChi}</p>
+          <p>📍 {store.diaChi}</p>
           <p>{store.moTa}</p>
+
+          {/* THÊM INFO NHỎ */}
+          <div className="extra-info">
+            <span>📂 {store.danhmuc}</span>
+            <span>🌐 {store.ngonngu}</span>
+            <span>📏 {store.bankinh} m</span>
+          </div>
         </div>
+
       </div>
     </div>
   );

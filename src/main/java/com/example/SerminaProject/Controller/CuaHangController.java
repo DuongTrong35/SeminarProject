@@ -4,95 +4,83 @@ import com.example.SerminaProject.Model.CuaHang;
 import com.example.SerminaProject.Service.CuaHangService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
 import org.springframework.web.multipart.MultipartFile;
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.UUID;
 
+import java.io.IOException;
+import java.nio.file.*;
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/cuahang")
-@CrossOrigin(origins = "*")
+@CrossOrigin("*")
 public class CuaHangController {
 
     @Autowired
     private CuaHangService service;
 
-    // Lấy tất cả
     @GetMapping
     public List<CuaHang> getAll() {
         return service.getAll();
     }
 
-    // Lấy theo user
+    @GetMapping("/{id}")
+    public CuaHang getById(@PathVariable String id) {
+        return service.getById(id);
+    }
+
     @GetMapping("/user/{iduser}")
     public List<CuaHang> getByUser(@PathVariable String iduser) {
         return service.getByUser(iduser);
     }
 
-    // Thêm mới
     @PostMapping
     public CuaHang add(@RequestBody CuaHang ch) {
         return service.add(ch);
     }
 
-    // Update
     @PutMapping("/{id}")
     public CuaHang update(@PathVariable String id, @RequestBody CuaHang ch) {
         return service.update(id, ch);
     }
 
-    // Xóa
     @DeleteMapping("/{id}")
     public void delete(@PathVariable String id) {
         service.delete(id);
     }
 
-    // Search
     @GetMapping("/search")
     public List<CuaHang> search(@RequestParam String keyword) {
         return service.search(keyword);
     }
 
+    // Upload ảnh
     @PostMapping("/upload-image")
     public String uploadImage(@RequestParam("file") MultipartFile file) {
-        if (file.isEmpty()) {
-            return "Lỗi: File rỗng";
-        }
+
+        if (file.isEmpty()) return "File rỗng";
+
         try {
-            // Lấy tên file gốc và tạo tên mới để tránh trùng lặp
-            String originalFilename = file.getOriginalFilename();
-            String newFilename = UUID.randomUUID().toString() + "_" + originalFilename;
+            String newFileName = UUID.randomUUID() + "_" + file.getOriginalFilename();
 
-            // Đường dẫn lưu file (lưu vào thư mục static/images của Spring Boot)
-            // Lưu ý: Cần tạo sẵn thư mục này trong project của bạn
-            String uploadDir = "src/main/resources/static/images/";
-            Path uploadPath = Paths.get(uploadDir);
+            String uploadDir = "uploads/";
+            Path path = Paths.get(uploadDir);
 
-            if (!Files.exists(uploadPath)) {
-                Files.createDirectories(uploadPath);
+            if (!Files.exists(path)) {
+                Files.createDirectories(path);
             }
 
-            byte[] bytes = file.getBytes();
-            Path path = Paths.get(uploadDir + newFilename);
-            Files.write(path, bytes);
+            Path filePath = path.resolve(newFileName);
 
-            // Trả về tên file để Frontend lưu vào Database (trường imageUrl)
-            return newFilename;
+            Files.write(filePath, file.getBytes());
+
+            System.out.println("Saved: " + filePath.toAbsolutePath());
+
+            return newFileName;
+
         } catch (IOException e) {
             e.printStackTrace();
-            return "Lỗi khi upload file";
+            return "Upload lỗi";
         }
-    }
-
-    // Lấy theo ID
-    @GetMapping("/{id}")
-    public CuaHang getById(@PathVariable String id) {
-        return service.getById(id);
     }
 }
