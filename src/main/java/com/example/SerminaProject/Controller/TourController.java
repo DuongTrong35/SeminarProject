@@ -58,4 +58,15 @@ public class TourController {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }
     }
+
+    // 5. Cập nhật (Sửa) Tour
+    @PutMapping("/{id}")
+    public ResponseEntity<?> updateTour(@PathVariable Integer id, @RequestBody TourRequestDTO dto) {
+        try {
+            Tour updatedTour = tourService.updateTour(id, dto);
+            return new ResponseEntity<>(updatedTour, HttpStatus.OK);
+        } catch (RuntimeException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
 }

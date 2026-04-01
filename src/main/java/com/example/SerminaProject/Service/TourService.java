@@ -73,4 +73,40 @@ public class TourService {
         }
         tourRepository.deleteById(id);
     }
+
+    // 5. Cập nhật Tour (Sửa Tour)
+    @Transactional
+    public Tour updateTour(Integer id, TourRequestDTO dto) {
+        // BƯỚC 1: Tìm xem Tour có tồn tại không
+        Tour existingTour = tourRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Không tìm thấy Tour có ID: " + id));
+
+        // BƯỚC 2: Cập nhật các thông tin cơ bản
+        existingTour.setTenTour(dto.getTenTour());
+        existingTour.setMoTa(dto.getMoTa());
+        existingTour.setGia(dto.getGia());
+
+        // BƯỚC 3: Xóa lộ trình cũ
+        // Mình clear() cái list cũ đi. Nhờ dòng 'orphanRemoval = true' trong Entity Tour, 
+        // Database sẽ tự động xóa sạch các trạm cũ của Tour này.
+        existingTour.getLichTrinhTours().clear(); 
+
+        // BƯỚC 4: Lắp lộ trình mới vào (Giống y hệt lúc Create)
+        if (dto.getDanhSachTram() != null && !dto.getDanhSachTram().isEmpty()) {
+            for (TramDTO tramDTO : dto.getDanhSachTram()) {
+                CuaHang cuahang = cuaHangRepository.findById(tramDTO.getIdCuahang())
+                        .orElseThrow(() -> new RuntimeException("Cửa hàng không tồn tại: " + tramDTO.getIdCuahang()));
+
+                LichTrinhTour lichTrinh = new LichTrinhTour();
+                lichTrinh.setTour(existingTour); // Nhớ trỏ về existingTour
+                lichTrinh.setCuahang(cuahang);
+                lichTrinh.setThuTuTram(tramDTO.getThuTuTram());
+                
+                existingTour.getLichTrinhTours().add(lichTrinh);
+            }
+        }
+        
+        // BƯỚC 5: Lưu lại
+        return tourRepository.save(existingTour);
+    }
 }
