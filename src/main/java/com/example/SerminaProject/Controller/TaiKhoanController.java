@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-@CrossOrigin(origins = "http://localhost:3000") // React
+@CrossOrigin(origins = "*") // Tạm để * để frontend cổng nào gọi cũng được
 @RestController
 @RequestMapping("/login")
 public class TaiKhoanController {
@@ -14,37 +14,25 @@ public class TaiKhoanController {
     @Autowired
     private TaiKhoanService service;
 
-    // @PostMapping("/xulydn")
-    // public ResponseEntity<?> login(
-    // @RequestParam String taikhoan,
-    // @RequestParam String matkhau) {
-    //
-    // TaiKhoan user = service.checkLogin(taikhoan, matkhau);
-    //
-    // if (user == null) {
-    // return ResponseEntity.status(401).body("Sai tài khoản hoặc mật khẩu");
-    // }
-    //
-    // return ResponseEntity.ok(user);
-    // }
-
     @PostMapping("/xulydn")
     public ResponseEntity<?> login(
             @RequestParam String taikhoan,
             @RequestParam String matkhau) {
 
+        // Lưu ý: Hàm checkLogin trong Service phải được sửa để dùng username/password nha
         TaiKhoan user = service.checkLogin(taikhoan, matkhau);
 
         if (user == null) {
             return ResponseEntity.status(401).body("Sai tài khoản hoặc mật khẩu");
         }
 
-        // ✅ trả đầy đủ dữ liệu cần
+        // ✅ Trả đầy đủ dữ liệu cần thiết cho ReactJS (Theo cấu trúc DB mới)
         return ResponseEntity.ok(new Object() {
-            public final Integer id = user.getId();
-            public final String iduser = user.getIduser();
-            public final String taikhoan = user.getTaikhoan();
+            public final Long id = user.getId();
+            // Đã xóa iduser vì không còn xài nữa
+            public final String username = user.getUsername(); // Trả về username
             public final String role = user.getRole();
+            public final String goiDichVu = user.getGoiDichVu(); // FE cần biết gói Basic hay Pro để mở khóa Tour
         });
     }
 
@@ -56,11 +44,18 @@ public class TaiKhoanController {
 
         try {
             TaiKhoan newUser = new TaiKhoan();
-            newUser.setTaikhoan(taikhoan);
-            newUser.setMatkhau(matkhau);
+
+            // Sử dụng các hàm Setter mới
+            newUser.setUsername(taikhoan);
+            newUser.setPassword(matkhau);
             newUser.setRole(role);
 
-            newUser.setIduser("U_" + System.currentTimeMillis());
+            // Bơm sẵn các thông số mặc định cho User mới tạo
+            newUser.setGoiDichVu("BASIC");
+            newUser.setNgonNguUaThich("vi");
+            newUser.setVungMienUaThich("Mien Nam");
+
+            // Đã XÓA dòng newUser.setIduser(...) vì ID giờ do Database tự lo (Auto Increment)
 
             TaiKhoan savedUser = service.dangKyTaiKhoan(newUser);
 

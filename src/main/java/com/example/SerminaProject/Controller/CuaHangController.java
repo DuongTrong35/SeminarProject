@@ -30,7 +30,7 @@ public class CuaHangController {
     }
 
     @GetMapping("/user/{iduser}")
-    public List<CuaHang> getByUser(@PathVariable String iduser) {
+    public List<CuaHang> getByUser(@PathVariable Long iduser) {
         return service.getByUser(iduser);
     }
 
