@@ -3,9 +3,10 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import '../../QuanTri/TrangChuQT.css'; // Sửa đường dẫn CSS nếu cần
 
 const navItems = [
-    { to: "/admin", label: "Trang chủ", icon: "🏠" },
-    { to: "/admin/qlch", label: "Quản lý cửa hàng", icon: "🏪" },
-    { to: "/admin/tours", label: "Quản lý Tour", icon: "📍" },
+  { to: "/admin", label: "Trang chủ", icon: "🏠" },
+  { to: "/admin/qlch", label: "Quản lý cửa hàng", icon: "🏪" },
+  { to: "/admin/tours", label: "Quản lý Tour", icon: "📍" },
+  { to: "/admin/hopdong", label: "Duyệt hợp đồng", icon: "📝" },
 ];
 
 const AddTour = () => {

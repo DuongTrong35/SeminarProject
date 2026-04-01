@@ -22,6 +22,7 @@ import EditCuaHang from "./components/QuanTri/CuaHang/EditCuaHang";
 import TCND from "./components/NguoiDung/TCNguoiDung";
 import Mhad from "./components/QuanTri/Dashboard";
 import POIForm from "./components/POIForm";
+import DuyetCuaHang from './components/QuanTri/CuaHang/DuyetCuaHang';
 // import Dashboard from "./components/QuanTri/Dashboard";
 import QuanLyTour from './components/QuanTri/Tour/QuanLyTour';
 import AddTour from './components/QuanTri/Tour/AddTour';
@@ -82,6 +83,7 @@ function AppRouter() {
       <Route path="/voice" element={<DanhSachGiongDoc />} />
       <Route path="/admin/qlch/:id" element={<XemchitietCH />} />
       {/* <Route path="/cuahang/detail/:id" element={<XemchitietCH />} /> */}
+
       <Route path="/admin/qlch/add" element={<AddCuaHang />} />
       <Route path="/admin/qlch/edit/:id" element={<EditCuaHang />} />
       <Route path="/tcnd" element={<TCND />} />
@@ -94,6 +96,8 @@ function AppRouter() {
       <Route path="/admin/tours" element={<QuanLyTour />} />
       <Route path="/admin/tours/add" element={<AddTour />} />
       <Route path="/admin/tours/edit/:id" element={<EditTour />} />
+      <Route path="/admin/hopdong" element={<DuyetCuaHang />} />
+
     </Routes>
   );
 }
