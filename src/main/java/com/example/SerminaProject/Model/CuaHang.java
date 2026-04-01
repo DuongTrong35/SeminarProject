@@ -11,7 +11,7 @@ public class CuaHang {
     private String id;
 
     @Column(name = "iduser")
-    private String iduser;
+    private Long iduser;
 
     @Column(name = "ten")
     private String ten;
@@ -53,8 +53,8 @@ public class CuaHang {
     public String getId() { return id; }
     public void setId(String id) { this.id = id; }
 
-    public String getIduser() { return iduser; }
-    public void setIduser(String iduser) { this.iduser = iduser; }
+    public Long getIduser() { return iduser; }
+    public void setIduser(Long iduser) { this.iduser = iduser; }
 
     public String getTen() { return ten; }
     public void setTen(String ten) { this.ten = ten; }

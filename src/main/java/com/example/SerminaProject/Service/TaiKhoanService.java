@@ -22,11 +22,13 @@ public class TaiKhoanService {
     }
 
     public TaiKhoan checkLogin(String taikhoan, String matkhau) {
-        return repository.findByTaikhoanAndMatkhau(taikhoan, matkhau)
+        // SỬA: Gọi đúng tên hàm findByUsernameAndPassword
+        // Vẫn giữ tham số truyền vào là taikhoan, matkhau để không phải sửa Controller
+        return repository.findByUsernameAndPassword(taikhoan, matkhau)
                 .orElse(null);
     }
 
     public TaiKhoan dangKyTaiKhoan(TaiKhoan taiKhoan) {
-        return repository.save(taiKhoan); 
+        return repository.save(taiKhoan);
     }
 }

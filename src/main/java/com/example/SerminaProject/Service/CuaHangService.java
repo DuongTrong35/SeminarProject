@@ -53,7 +53,7 @@ public class CuaHangService {
         return repository.findByTenContainingIgnoreCase(keyword);
     }
 
-    public List<CuaHang> getByUser(String iduser) {
+    public List<CuaHang> getByUser(Long iduser) {
         return repository.findByIduser(iduser);
     }
 
