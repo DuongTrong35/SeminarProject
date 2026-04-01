@@ -8,6 +8,7 @@ const API_URL = "http://localhost:8080/api/cuahang";
 const navItems = [
   { to: "/admin", label: "Trang chủ", icon: "🏠" },
   { to: "/admin/qlch", label: "Quản lý cửa hàng", icon: "🏪" },
+  { to: "/admin/tours", label: "Quản lý Tour", icon: "📍" },
 ];
 
 function QuanLyCH() {
@@ -148,7 +149,7 @@ function QuanLyCH() {
           </Link>
         ))}
 
-        <button className="cuahang-btn red" onClick={handleLogout}>
+        <button className="quantri-btn red" onClick={handleLogout}>
           Đăng xuất
         </button>
       </aside>
