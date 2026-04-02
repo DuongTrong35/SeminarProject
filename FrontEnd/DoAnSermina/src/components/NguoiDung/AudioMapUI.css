@@ -224,5 +224,139 @@
 }
 
 
+.amui-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+.amui-modal-box {
+  background: #fff;
+  padding: 25px;
+  border-radius: 15px;
+  width: 300px;
+  text-align: center;
+}
+
+.amui-modal-buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.amui-btn {
+  flex: 1;
+  margin: 0 5px;
+  padding: 10px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.amui-btn.yes {
+  background: #2ecc71;
+  color: white;
+}
+
+.amui-btn.no {
+  background: #e74c3c;
+  color: white;
+}
 
 
+.amui-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.4);
+  z-index: 9998;
+}
+
+.amui-tour-sidebar {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 450px;
+  height: 100%;
+  background: #fff;
+  box-shadow: -4px 0 15px rgba(0,0,0,0.2);
+  transform: translateX(100%);
+  transition: 0.3s ease;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+}
+
+.amui-tour-sidebar.open {
+  transform: translateX(0);
+}
+
+.amui-tour-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px;
+  border-bottom: 1px solid #eee;
+}
+
+.amui-tour-list {
+  flex: 1;
+  overflow-y: auto;
+}
+
+.amui-tour-item {
+  padding: 15px;
+  border-bottom: 1px solid #f0f0f0;
+  cursor: pointer;
+}
+
+.amui-tour-item:hover {
+  background: #f5f5f5;
+}
+/* ⭐ GROUP TOP RIGHT */
+.amui-top-right-controls {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  z-index: 1000;
+}
+
+/* sửa để nằm trong group */
+.amui-lang-floating {
+  position: relative;
+}
+
+/* ⭐ TOUR BUTTON */
+.amui-tour-btn {
+  background: #0b1f44;
+  color: #fff;
+  border: none;
+
+  padding: 8px 12px;
+  border-radius: 20px;
+
+  font-size: 13px;
+  cursor: pointer;
+
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+  transition: 0.2s;
+}
+
+.amui-tour-btn:hover {
+  background: #132c5c;
+}

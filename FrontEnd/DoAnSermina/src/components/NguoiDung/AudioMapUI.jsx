@@ -44,100 +44,43 @@ function RecenterMap({ position }) {
 }
 
 function AudioMapUI() {
-  const [position, setPosition] = useState([10.76, 106.70]);
+  const [position, setPosition] = useState([10.76, 106.7]);
   const [showLang, setShowLang] = useState(false);
   const [shop, setShop] = useState(null);
   const [route, setRoute] = useState([]);
   const [isSpeaking, setIsSpeaking] = useState(false);
+  const [audioObj, setAudioObj] = useState(null);
 
-  // 🔥 LOAD VOICES
-  useEffect(() => {
-    window.speechSynthesis.getVoices();
-  }, []);
+  // ⭐ POPUP TOUR
+  const [showTourModal, setShowTourModal] = useState(true);
+  const [hasTour, setHasTour] = useState(null);
 
-  // 🔥 SPEAK THEO NGÔN NGỮ
- const [audioObj, setAudioObj] = useState(null);
+  // ⭐ SIDEBAR TOUR
+  const [showTourList, setShowTourList] = useState(false);
+  const [selectedTour, setSelectedTour] = useState(null);
 
+  const [tours, setTours] = useState([]);
 useEffect(() => {
-  const loadVoices = () => {
-    window.speechSynthesis.getVoices();
-  };
-
-  loadVoices();
-  window.speechSynthesis.onvoiceschanged = loadVoices;
+  axios
+axios.get("http://localhost:8080/api/admin/tours")    .then((res) => {
+      setTours(res.data);
+    })
+    .catch((err) => console.error(err));
 }, []);
 
-const speakText = async (text, langCode) => {
-  if (!text) return;
+  const [floatingLang, setFloatingLang] = useState({
+    code: "VN",
+    label: "Tiếng Việt",
+  });
 
-  setIsSpeaking(true);
+  const [panelLang, setPanelLang] = useState("Tiếng Việt");
 
-  try {
-    // ===== LANGUAGE =====
-    const targetLang =
-      langCode === "EN" ? "en" : "vi";
+  useEffect(() => {
+    window.speechSynthesis.getVoices();
+    window.speechSynthesis.onvoiceschanged = () =>
+      window.speechSynthesis.getVoices();
+  }, []);
 
-    // ===== TRANSLATE =====
-    let finalText = text;
-
-    if (targetLang !== "vi") {
-      const res = await fetch(
-        `http://localhost:8080/api/translate/translate?text=${encodeURIComponent(text)}&target=${targetLang}`
-      );
-
-      if (!res.ok) throw new Error("Translate lỗi");
-
-      const data = await res.json();
-
-      finalText =
-        data?.[0]?.map(item => item?.[0]).join("") || text;
-    }
-
-    console.log("FINAL TEXT:", finalText);
-
-    // ===== TTS =====
-    const audioRes = await fetch(
-      `http://localhost:8080/api/tts?text=${encodeURIComponent(finalText)}&lang=${targetLang}`
-    );
-
-    if (!audioRes.ok) throw new Error("TTS lỗi backend");
-
-    const blob = await audioRes.blob();
-
-    if (!blob || blob.size === 0) {
-      throw new Error("Audio rỗng");
-    }
-
-    const url = URL.createObjectURL(blob);
-
-    const audio = new Audio(url);
-
-    setAudioObj(audio);
-
-    audio.play();
-
-    audio.onended = () => {
-      setIsSpeaking(false);
-    };
-
-  } catch (err) {
-    console.error("❌ SPEAK ERROR:", err);
-    setIsSpeaking(false);
-  }
-};
-
- const stopSpeak = () => {
-  window.speechSynthesis.cancel();
-
-  if (audioObj) {
-    audioObj.pause();
-    audioObj.currentTime = 0;
-  }
-
-  setIsSpeaking(false);
-};
-
-  // 🔥 GPS REALTIME
   useEffect(() => {
     const watchId = navigator.geolocation.watchPosition(
       (pos) => {
@@ -150,15 +93,21 @@ const speakText = async (text, langCode) => {
     return () => navigator.geolocation.clearWatch(watchId);
   }, []);
 
-  // 🔥 API
   useEffect(() => {
+    if (!selectedTour) return;
+
     axios
-      .get("http://localhost:8080/api/cuahang/ch1")
+      .get(`http://localhost:8080/api/cuahang/${selectedTour.shopId}`)
       .then((res) => setShop(res.data))
       .catch((err) => console.error(err));
-  }, []);
-
-  // 🔥 ROUTE
+  }, [selectedTour]);
+// ⭐ LOAD SHOP MẶC ĐỊNH (QUAN TRỌNG)
+useEffect(() => {
+  axios
+    .get("http://localhost:8080/api/cuahang/ch1") // chọn mặc định
+    .then((res) => setShop(res.data))
+    .catch((err) => console.error(err));
+}, []);
   useEffect(() => {
     if (!shop) return;
 
@@ -173,16 +122,15 @@ const speakText = async (text, langCode) => {
       });
   }, [shop, position]);
 
-  // 🔥 DISTANCE
   function getDistance(lat1, lon1, lat2, lon2) {
     const R = 6371;
-    const dLat = (lat2 - lat1) * Math.PI / 180;
-    const dLon = (lon2 - lon1) * Math.PI / 180;
+    const dLat = ((lat2 - lat1) * Math.PI) / 180;
+    const dLon = ((lon2 - lon1) * Math.PI) / 180;
 
     const a =
       Math.sin(dLat / 2) ** 2 +
-      Math.cos(lat1 * Math.PI / 180) *
-        Math.cos(lat2 * Math.PI / 180) *
+      Math.cos((lat1 * Math.PI) / 180) *
+        Math.cos((lat2 * Math.PI) / 180) *
         Math.sin(dLon / 2) ** 2;
 
     return R * (2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a)));
@@ -198,15 +146,121 @@ const speakText = async (text, langCode) => {
       label: l,
     })) || [];
 
-  const [floatingLang, setFloatingLang] = useState({
-    code: "VN",
-    label: "Tiếng Việt",
-  });
+  const speakText = async (text, langCode) => {
+    if (!text) return;
 
-  const [panelLang, setPanelLang] = useState("Tiếng Việt");
+    setIsSpeaking(true);
+
+    try {
+      const targetLang = langCode === "EN" ? "en" : "vi";
+      let finalText = text;
+
+      if (targetLang !== "vi") {
+        const res = await fetch(
+          `http://localhost:8080/api/translate/translate?text=${encodeURIComponent(
+            text
+          )}&target=${targetLang}`
+        );
+        const data = await res.json();
+        finalText = data?.translatedText || text;
+      }
+
+      const audioRes = await fetch(
+        `http://localhost:8080/api/tts?text=${encodeURIComponent(
+          finalText
+        )}&lang=${targetLang}`
+      );
+
+      const blob = await audioRes.blob();
+      const url = URL.createObjectURL(blob);
+
+      const audio = new Audio(url);
+      setAudioObj(audio);
+
+      audio.play();
+      audio.onended = () => setIsSpeaking(false);
+    } catch (err) {
+      console.error(err);
+      setIsSpeaking(false);
+    }
+  };
+
+  const stopSpeak = () => {
+    window.speechSynthesis.cancel();
+
+    if (audioObj) {
+      audioObj.pause();
+      audioObj.currentTime = 0;
+    }
+
+    setIsSpeaking(false);
+  };
 
   return (
     <div className="amui-container">
+
+      {/* ⭐ POPUP TOUR */}
+      {showTourModal && (
+        <div className="amui-modal-overlay">
+          <div className="amui-modal-box">
+            <h2>Bạn có muốn chọn tour không?</h2>
+
+            <div className="amui-modal-buttons">
+              <button
+                className="amui-btn yes"
+                onClick={() => {
+                  setHasTour(true);
+                  setShowTourModal(false);
+                  setShowTourList(true);
+                }}
+              >
+                Có
+              </button>
+
+              <button
+                className="amui-btn no"
+                onClick={() => setShowTourModal(false)}
+              >
+                Không
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ⭐ OVERLAY */}
+      {showTourList && (
+        <div
+          className="amui-overlay"
+          onClick={() => setShowTourList(false)}
+        />
+      )}
+
+      {/* ⭐ SIDEBAR */}
+      <div className={`amui-tour-sidebar ${showTourList ? "open" : ""}`}>
+        <div className="amui-tour-header">
+          <h3>Chọn tour</h3>
+          <button onClick={() => setShowTourList(false)}>✕</button>
+        </div>
+
+        <div className="amui-tour-list">
+          {tours.map((tour) => (
+            <div
+              key={tour.id}
+              className="amui-tour-item"
+              onClick={() => {
+                setSelectedTour(tour);
+              }}
+            >
+             <b>{tour.tenTour}</b>
+<p>{tour.moTa}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+
+
+      {/* MAP */}
       <div className="amui-map">
         <MapContainer center={position} zoom={15} style={{ height: "100%" }}>
           <RecenterMap position={position} />
@@ -223,40 +277,53 @@ const speakText = async (text, langCode) => {
             </Marker>
           )}
 
-          {route.length > 0 && (
-            <Polyline positions={route} color="blue" />
-          )}
+          {route.length > 0 && <Polyline positions={route} color="blue" />}
         </MapContainer>
 
         <div className="amui-map-overlay">GPS đang bật</div>
 
-        <div
-          className="amui-lang-floating"
-          onClick={() => setShowLang(!showLang)}
-        >
-          <span>{floatingLang.code}</span>
-          <strong>{floatingLang.label}</strong>
+        {/* ⭐ GROUP TOP RIGHT */}
+        <div className="amui-top-right-controls">
 
-          {showLang && (
-            <div className="amui-lang-dropdown">
-              {dbLanguages.map((lang, i) => (
-                <div
-                  key={i}
-                  className="amui-lang-item"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setFloatingLang(lang);
-                    setShowLang(false);
-                  }}
-                >
-                  {lang.label}
-                </div>
-              ))}
-            </div>
-          )}
+          {/* 🌐 LANGUAGE */}
+          <div
+            className="amui-lang-floating"
+            onClick={() => setShowLang(!showLang)}
+          >
+            <span>{floatingLang.code}</span>
+            <strong>{floatingLang.label}</strong>
+
+            {showLang && (
+              <div className="amui-lang-dropdown">
+                {dbLanguages.map((lang, i) => (
+                  <div
+                    key={i}
+                    className="amui-lang-item"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setFloatingLang(lang);
+                      setShowLang(false);
+                    }}
+                  >
+                    {lang.label}
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+
+          {/* 🍜 TOUR BUTTON */}
+          <button
+            className="amui-tour-btn"
+            onClick={() => setShowTourList(true)}
+          >
+            ☰ Tour
+          </button>
+
         </div>
       </div>
 
+      {/* PANEL */}
       <div className="amui-panel">
         <div className="amui-panel-header">
           <h2>{shop?.ten || "Đang tải..."}</h2>
@@ -283,7 +350,6 @@ const speakText = async (text, langCode) => {
           {shop?.moTa || "Đang tải mô tả..."}
         </p>
 
-        {/* 🔊 PLAYER */}
         <div className="amui-player">
           <div className="amui-status">
             {isSpeaking ? "Đang phát..." : "Đã phát xong"}
@@ -291,17 +357,18 @@ const speakText = async (text, langCode) => {
 
           <div>
             <button
-  className="amui-replay"
-  onClick={() => speakText(shop?.moTa, panelLang === "Tiếng Việt" ? "vi" : "en")}
->
-  Phát lại
-</button>
-
-            <button
               className="amui-replay"
-              onClick={stopSpeak}
-              style={{ marginLeft: 10 }}
+              onClick={() =>
+                speakText(
+                  shop?.moTa,
+                  panelLang === "Tiếng Việt" ? "vi" : "en"
+                )
+              }
             >
+              Phát lại
+            </button>
+
+            <button className="amui-replay" onClick={stopSpeak}>
               Dừng
             </button>
           </div>
