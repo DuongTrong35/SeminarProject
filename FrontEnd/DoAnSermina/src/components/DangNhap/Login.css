@@ -1,12 +1,12 @@
 /* ===== BACKGROUND ===== */
 .Container {
-  height: calc(100vh - 9.8vh);
+  height: calc(100vh - 9.5vh);
   background-size: cover;
   background-position: center;
   position: relative;
   display: flex;
-  align-items:center;
-  justify-content:center;
+  align-items: center;
+  justify-content: center;
 }
 
 /* Làm mờ nền */
@@ -22,19 +22,22 @@
   position: relative;
   z-index: 2;
   /* width: 400px; */
-    width: 520px; /* 👈 sửa ở đây */
+  width: 520px;
+  /* 👈 sửa ở đây */
 
 }
 
 /* ===== CARD ===== */
 .custom-card {
-  background: #fff; /* 👈 TRẮNG */
+  background: #fff;
+  /* 👈 TRẮNG */
   text-align: center;
   border-radius: 20px;
   position: relative;
   z-index: 2;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-  padding: 40px; /* 👈 thêm dòng này */
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  padding: 40px;
+  /* 👈 thêm dòng này */
 
 }
 
@@ -44,7 +47,7 @@
   position: absolute;
   inset: -4px;
   border-radius: 24px;
-  background: linear-gradient(135deg, #a855f7, #ef4444);
+  background: linear-gradient(135deg, #d2faff, #f5fcff);
   z-index: -1;
 }
 
@@ -52,6 +55,11 @@
 .input-group-text {
   background: #fff;
   border-right: none;
+}
+
+.login-input-group {
+  position: relative;
+  margin-bottom: 10px;
 }
 
 .form-control {
@@ -65,13 +73,14 @@
 
 /* ===== BUTTON ===== */
 .btn-login-group {
-display: flex;
-flex-direction: column;
-padding: 0px 80px 0px 80px;
+  display: flex;
+  flex-direction: column;
+  margin-top: 25px;
+  padding: 0px 80px 0px 80px;
 }
 
 .btn-primary {
-  background: linear-gradient(45deg, #3b82f6, #2563eb);
+  background: linear-gradient(135deg, #00b894 0%, #00cec9 100%);
   border: none;
   border-radius: 8px;
   padding: 10px;
@@ -79,7 +88,7 @@ padding: 0px 80px 0px 80px;
 }
 
 .btn-second {
-  background: linear-gradient(45deg, #3b82f6, #2563eb);
+  background: linear-gradient(135deg, #00b894 0%, #00cec9 100%);
   border: none;
   border-radius: 8px;
   padding: 10px;
@@ -120,8 +129,22 @@ padding: 0px 80px 0px 80px;
 
 /* ===== RESPONSIVE ===== */
 @media (max-width: 768px) {
+
   .PictureLeft,
   .PictureRight {
     display: none;
   }
+}
+
+.login-logo {
+  text-align: center;
+  margin-bottom: 5px;
+}
+
+.login-textTitle {
+  text-align: center;
+  margin-bottom: 25px;
+  font-weight: bold;
+  font-size: 25px;
+  color: black;
 }
