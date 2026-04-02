@@ -12,23 +12,25 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-
 public class Tour {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(name = "ten_tour")
+    @Column(name = "ten_tour", nullable = false)
     private String tenTour;
 
-    @Column(name = "mo_ta")
+    @Column(name = "mo_ta", columnDefinition = "TEXT")
     private String moTa;
 
     @Column(name = "gia")
     private Double gia;
 
-    // getter setter
+    // Quan hệ 1-Nhiều với bảng Lịch Trình Tour
+    // orphanRemoval = true: Nếu xóa Tour, tự động xóa luôn các trạm bên trong
+    @OneToMany(mappedBy = "tour", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<LichTrinhTour> lichTrinhTours;
 
     public Integer getId() {
         return id;
@@ -60,5 +62,13 @@ public class Tour {
 
     public void setGia(Double gia) {
         this.gia = gia;
+    }
+
+    public List<LichTrinhTour> getLichTrinhTours() {
+        return lichTrinhTours;
+    }
+
+    public void setLichTrinhTours(List<LichTrinhTour> lichTrinhTours) {
+        this.lichTrinhTours = lichTrinhTours;
     }
 }
