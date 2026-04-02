@@ -117,7 +117,7 @@ const QuanLyTour = () => {
                                 <td style={{ padding: '10px' }}>{tour.id}</td>
                                 <td style={{ padding: '10px' }}><strong>{tour.tenTour}</strong></td>
                                 <td style={{ padding: '10px' }}>{tour.moTa}</td>
-                                <td style={{ padding: '10px', color: '#28a745', fontWeight: 'bold' }}>{tour.gia.toLocaleString()} đ</td>
+                                {/* <td style={{ padding: '10px', color: '#28a745', fontWeight: 'bold' }}>{tour.gia.toLocaleString()} đ</td> */}
                                 <td style={{ padding: '10px' }}>{tour.lichTrinhTours ? tour.lichTrinhTours.length : 0}</td>
                                 <td style={{ padding: '10px' }}>
                                     <button onClick={() => navigate(`/admin/tours/edit/${tour.id}`)} style={{ padding: '5px 10px', marginRight: '5px', cursor: 'pointer' }}>Sửa</button>

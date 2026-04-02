@@ -1,6 +1,6 @@
 import "./Login.css";
 import logo from "../../assets/images/LogoVK.jpg";
-import mhdn from "../../assets/images/BG_Login.jpg";
+import mhdn from "../../assets/images/BG_Login.png";
 import Navbar from "../Navbar";
 
 import { useState } from "react";

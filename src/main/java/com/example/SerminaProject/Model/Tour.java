@@ -28,6 +28,11 @@ public class Tour {
     @Column(name = "gia")
     private Double gia;
 
+    // Quan hệ 1-Nhiều với bảng Lịch Trình Tour
+    // orphanRemoval = true: Nếu xóa Tour, tự động xóa luôn các trạm bên trong
+    @OneToMany(mappedBy = "tour", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<LichTrinhTour> lichTrinhTours;
+    
     // getter setter
 
     public Integer getId() {
