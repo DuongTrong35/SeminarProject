@@ -12,8 +12,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/admin/tours")
-@CrossOrigin(origins = "*") // RẤT QUAN TRỌNG: Mở cửa cho ReactJS (cổng 3000 hoặc 5173) gọi vào không bị lỗi
-                            // CORS
+@CrossOrigin(origins = "*") // RẤT QUAN TRỌNG: Mở cửa cho ReactJS (cổng 3000 hoặc 5173) gọi vào không bị lỗi CORS
 public class TourController {
 
     @Autowired
@@ -69,5 +68,10 @@ public class TourController {
         } catch (RuntimeException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
+    }
+
+    @GetMapping("/{id}/cuahangs")
+    public ResponseEntity<?> getShopsByTour(@PathVariable Integer id) {
+        return ResponseEntity.ok(tourService.getShopsByTourId(id));
     }
 }

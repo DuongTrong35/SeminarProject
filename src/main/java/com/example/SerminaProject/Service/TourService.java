@@ -6,6 +6,7 @@ import com.example.SerminaProject.Model.Tour;
 import com.example.SerminaProject.Model.DTO.TourRequestDTO;
 import com.example.SerminaProject.Model.DTO.TramDTO;
 import com.example.SerminaProject.Repository.CuaHangRepository;
+import com.example.SerminaProject.Repository.LichTrinhTourRepository;
 import com.example.SerminaProject.Repository.TourRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class TourService {
@@ -38,6 +40,7 @@ public class TourService {
     // 3. Tạo Tour mới (Kèm theo lộ trình)
     @Transactional // Đảm bảo lưu thành công cả Tour và Lịch trình, nếu lỗi 1 cái là Hủy hết
                    // (Rollback)
+    @Transactional // Đảm bảo lưu thành công cả Tour và Lịch trình, nếu lỗi 1 cái là Hủy hết (Rollback)
     public Tour createTour(TourRequestDTO dto) {
         Tour tour = new Tour();
         tour.setTenTour(dto.getTenTour());
@@ -66,6 +69,7 @@ public class TourService {
 
         // Lưu 1 phát ăn luôn cả bảng tours và lich_trinh_tour nhờ CascadeType.ALL trong
         // Entity
+        // Lưu 1 phát ăn luôn cả bảng tours và lich_trinh_tour nhờ CascadeType.ALL trong Entity
         return tourRepository.save(tour);
     }
 
@@ -92,6 +96,7 @@ public class TourService {
         // BƯỚC 3: Xóa lộ trình cũ
         // Mình clear() cái list cũ đi. Nhờ dòng 'orphanRemoval = true' trong Entity
         // Tour,
+        // Mình clear() cái list cũ đi. Nhờ dòng 'orphanRemoval = true' trong Entity Tour,
         // Database sẽ tự động xóa sạch các trạm cũ của Tour này.
         existingTour.getLichTrinhTours().clear();
 
@@ -112,5 +117,16 @@ public class TourService {
 
         // BƯỚC 5: Lưu lại
         return tourRepository.save(existingTour);
+    }
+
+
+    @Autowired
+    private LichTrinhTourRepository lichTrinhTourRepository;
+    public List<CuaHang> getShopsByTourId(Integer tourId) {
+        List<LichTrinhTour> list = lichTrinhTourRepository
+                .findByTourIdOrderByThuTuTramAsc(tourId);
+        return list.stream()
+                .map(LichTrinhTour::getCuahang)
+                .collect(Collectors.toList());
     }
 }

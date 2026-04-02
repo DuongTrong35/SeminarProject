@@ -1,0 +1,253 @@
+/* Reset nhẹ để không bị ảnh hưởng global */
+.amui-container * {
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+}
+
+/* Container */
+.amui-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background: #fff;
+}
+
+/* Map */
+.amui-map {
+  height: 45%;
+  background: #ddd; /* tạm, sau bạn thay map thật */
+  position: relative;
+}
+
+.amui-map-overlay {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  background: #fff;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+/* Panel */
+.amui-panel {
+  flex: 1;
+  background: #f6f8f7;
+  padding: 20px;
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+}
+
+/* Header */
+.amui-panel-header h2 {
+  margin: 0;
+  font-size: 20px;
+}
+
+.amui-panel-header p {
+  margin-top: 5px;
+  color: #777;
+  font-size: 14px;
+}
+
+/* Languages */
+.amui-languages {
+  margin: 15px 0;
+}
+
+.amui-languages button {
+  margin: 5px 6px 5px 0;
+  padding: 6px 12px;
+  border-radius: 20px;
+  border: none;
+  background: #e5e5e5;
+  cursor: pointer;
+  font-size: 13px;
+  transition: 0.2s;
+}
+
+.amui-languages button:hover {
+  background: #d0d0d0;
+}
+
+.amui-active {
+  background: #2ecc71 !important;
+  color: white;
+}
+
+/* Description */
+.amui-description {
+  margin: 10px 0 15px;
+  font-size: 14px;
+}
+
+/* Player */
+.amui-player {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #fff;
+  padding: 12px;
+  border-radius: 10px;
+  margin-bottom: 15px;
+}
+
+.amui-status {
+  font-size: 14px;
+  color: #555;
+}
+
+.amui-replay {
+  border: none;
+  background: #e8f5ee;
+  padding: 6px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+/* Playing */
+.amui-playing {
+  background: #dff3ea;
+  padding: 12px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+}
+
+.amui-playing span {
+  font-size: 12px;
+  color: #666;
+}
+
+.amui-playing strong {
+  display: block;
+  margin-top: 4px;
+}
+
+/* Button */
+.amui-start-btn {
+  width: 100%;
+  padding: 15px;
+  background: #0b1f44;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.amui-start-btn:hover {
+  background: #132c5c;
+}
+
+.amui-lang-floating {
+  position: absolute;
+  top: 12px;
+  right: 12px; /* QUAN TRỌNG: ép sang phải */
+
+  display: flex;
+  align-items: center;
+  gap: 6px;
+
+  background: #fff;
+  padding: 8px 12px;
+  border-radius: 20px;
+
+  font-size: 13px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+
+  cursor: pointer;
+  z-index: 1000; /* đè lên map */
+}
+
+.amui-lang-floating strong {
+  font-weight: 600;
+}
+
+.amui-lang-floating .arrow {
+  font-size: 10px;
+}
+.amui-lang-dropdown {
+  position: absolute;
+  top: 45px;
+  right: 0;
+
+  background: #fff;
+  border-radius: 10px;
+  padding: 6px 0;
+
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+  width: 150px;
+}
+
+.amui-lang-item {
+  padding: 8px 12px;
+  cursor: pointer;
+  font-size: 13px;
+}
+
+.amui-lang-item:hover {
+  background: #f0f0f0;
+}
+
+.amui-lang-item.active {
+  background: #2ecc71;
+  color: white;
+}
+
+.amui-lang-dropdown {
+  position: absolute;
+  top: 45px;
+  right: 0;
+  background: #fff;
+  border-radius: 10px;
+  padding: 6px 0;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+  width: 150px;
+  z-index: 2000;
+}
+
+.amui-lang-item {
+  padding: 8px 12px;
+  cursor: pointer;
+  font-size: 13px;
+}
+
+.amui-lang-item:hover {
+  background: #f0f0f0;
+}
+
+.amui-lang-item.active {
+  background: #2ecc71;
+  color: white;
+}
+
+
+
+
+.amui-controller {
+  position: absolute;
+  bottom: 100px;
+  left: 20px;
+  z-index: 1000;
+
+  display: grid;
+  grid-template-columns: 50px 50px 50px;
+  grid-template-rows: 50px 50px 50px;
+  gap: 5px;
+
+  background: rgba(255,255,255,0.9);
+  padding: 10px;
+  border-radius: 15px;
+}
+
+.amui-controller button {
+  width: 50px;
+  height: 50px;
+  font-size: 20px;
+  border-radius: 10px;
+  border: none;
+  background: #eee;
+  cursor: pointer;
+}

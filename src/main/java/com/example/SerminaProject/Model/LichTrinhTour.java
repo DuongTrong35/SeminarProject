@@ -28,4 +28,36 @@ public class LichTrinhTour {
 
     @Column(name = "thu_tu_tram", nullable = false)
     private Integer thuTuTram;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public Tour getTour() {
+        return tour;
+    }
+
+    public void setTour(Tour tour) {
+        this.tour = tour;
+    }
+
+    public CuaHang getCuahang() {
+        return cuahang;
+    }
+
+    public void setCuahang(CuaHang cuahang) {
+        this.cuahang = cuahang;
+    }
+
+    public Integer getThuTuTram() {
+        return thuTuTram;
+    }
+
+    public void setThuTuTram(Integer thuTuTram) {
+        this.thuTuTram = thuTuTram;
+    }
 }
