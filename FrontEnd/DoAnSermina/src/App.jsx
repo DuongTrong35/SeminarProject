@@ -22,6 +22,7 @@ import EditCuaHang from "./components/QuanTri/CuaHang/EditCuaHang";
 import TCND from "./components/NguoiDung/TCNguoiDung";
 import Mhad from "./components/QuanTri/Dashboard";
 import MHuser from "./components/NguoiDung/AudioMapUI";
+import MHuserfree from "./components/NguoiDung/AudioMapFreeUI";
 
 import POIForm from "./components/POIForm";
 // import Dashboard from "./components/QuanTri/Dashboard";
@@ -84,7 +85,9 @@ function AppRouter() {
     <Route path="/admin/qlch/edit/:id" element={<EditCuaHang />} />
         <Route path="/tcnd" element={<TCND />} />
         <Route path="/mhad" element={<Mhad />} />
-        <Route path="/mhuser" element={<MHuser />} />
+          <Route path="/mhuser" element={<MHuser />} />
+          <Route path="/mhuserfree" element={<MHuserfree />} />
+
         {/* <Route path="/mhtest" element={<Dashboard />} /> */}
 
     </Routes>

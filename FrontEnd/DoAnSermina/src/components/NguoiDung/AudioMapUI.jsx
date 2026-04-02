@@ -1,6 +1,7 @@
 import "./AudioMapUI.css";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 // Leaflet
 import {
@@ -44,6 +45,7 @@ function RecenterMap({ position }) {
 }
 
 function AudioMapUI() {
+  const navigate = useNavigate();
   const [position, setPosition] = useState([10.761992635455506, 106.7022316837637]);
   // const [position, setPosition] = useState([10.76, 106.7]);
   const [showLang, setShowLang] = useState(false);
@@ -52,6 +54,27 @@ function AudioMapUI() {
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [audioObj, setAudioObj] = useState(null);
   const [tourShops, setTourShops] = useState([]);
+
+  const [isMoving, setIsMoving] = useState(false);
+const startSimulation = () => {
+  if (!route.length) return;
+
+  setIsMoving(true);
+
+  let i = 0;
+
+  const interval = setInterval(() => {
+    if (i >= route.length) {
+      clearInterval(interval);
+      setIsMoving(false);
+      return;
+    }
+
+    setPosition(route[i]);
+    i++;
+  }, 500); // tốc độ di chuyển (ms)
+};
+
   // ⭐ POPUP TOUR
   const [showTourModal, setShowTourModal] = useState(true);
   const [hasTour, setHasTour] = useState(null);
@@ -268,11 +291,14 @@ function AudioMapUI() {
               </button>
 
               <button
-                className="amui-btn no"
-                onClick={() => setShowTourModal(false)}
-              >
-                Không
-              </button>
+  className="amui-btn no"
+  onClick={() => {
+    setShowTourModal(false);
+    navigate("/mhuserfree");
+  }}
+>
+  Không
+</button>
             </div>
           </div>
         </div>
@@ -425,8 +451,12 @@ function AudioMapUI() {
           <strong>{shop?.ten}</strong>
         </div>
 
-        <button className="amui-start-btn">▶ Bắt đầu</button>
-      </div>
+<button 
+  className="amui-start-btn"
+  onClick={startSimulation}
+>
+  ▶ Bắt đầu
+</button>      </div>
     </div>
   );
 }
