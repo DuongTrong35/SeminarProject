@@ -90,7 +90,7 @@ function DuyetCuaHang() {
                         {item.icon} {item.label}
                     </Link>
                 ))}
-                <button className="cuahang-btn red" onClick={() => { localStorage.removeItem("user"); navigate("/login"); }} style={{marginTop: 'auto'}}>Đăng xuất</button>
+                <button className="quantri-btn red" onClick={() => { localStorage.removeItem("user"); navigate("/login"); }}>Đăng xuất</button>
             </aside>
 
             {/* MAIN CONTENT */}

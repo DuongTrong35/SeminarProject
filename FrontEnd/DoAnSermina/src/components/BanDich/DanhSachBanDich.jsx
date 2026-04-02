@@ -155,9 +155,9 @@ function DanhSachBanDich() {
       <aside className="cuahang-sidebar">
         <div className="cuahang-user">
           <div className="cuahang-avatar">
-            {user?.taikhoan?.charAt(0).toUpperCase() || "A"}
+            {user?.username?.charAt(0).toUpperCase() || "A"}
           </div>
-          <div>{user?.taikhoan}</div>
+          <div>{user?.username}</div>
         </div>
 
         {navItems.map((item) => (
