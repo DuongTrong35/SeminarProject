@@ -130,3 +130,16 @@
   padding: 8px 15px;
   border-radius: 20px;
 }
+
+.quantri-btn.red {
+  margin-top: 20px;
+  background: #ef4444;
+  color: white;
+}
+
+.quantri-btn {
+  padding: 6px 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}

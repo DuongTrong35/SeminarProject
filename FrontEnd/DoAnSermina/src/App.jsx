@@ -25,7 +25,12 @@ import MHuser from "./components/NguoiDung/AudioMapUI";
 import MHuserfree from "./components/NguoiDung/AudioMapFreeUI";
 
 import POIForm from "./components/POIForm";
+import DuyetCuaHang from './components/QuanTri/CuaHang/DuyetCuaHang';
 // import Dashboard from "./components/QuanTri/Dashboard";
+import QuanLyTour from './components/QuanTri/Tour/QuanLyTour';
+import AddTour from './components/QuanTri/Tour/AddTour';
+import EditTour from './components/QuanTri/Tour/EditTour';
+import DanhSachTour from './components/NguoiDung/DanhSachTour';
 
 
 import "./index.css";
@@ -81,6 +86,20 @@ function AppRouter() {
       <Route path="/voice" element={<DanhSachGiongDoc />} />
       <Route path="/admin/qlch/:id" element={<XemchitietCH />} />
       {/* <Route path="/cuahang/detail/:id" element={<XemchitietCH />} /> */}
+
+      <Route path="/admin/qlch/add" element={<AddCuaHang />} />
+      <Route path="/admin/qlch/edit/:id" element={<EditCuaHang />} />
+      <Route path="/tcnd" element={<TCND />} />
+      <Route path="/mhad" element={<Mhad />} />
+      {/* <Route path="/mhtest" element={<Dashboard />} /> */}
+      {/* Giao diện cho User */}
+      <Route path="/tours" element={<DanhSachTour />} />
+
+      {/* Giao diện cho Admin */}
+      <Route path="/admin/tours" element={<QuanLyTour />} />
+      <Route path="/admin/tours/add" element={<AddTour />} />
+      <Route path="/admin/tours/edit/:id" element={<EditTour />} />
+      <Route path="/admin/hopdong" element={<DuyetCuaHang />} />
     <Route path="/admin/qlch/add" element={<AddCuaHang />} />
     <Route path="/admin/qlch/edit/:id" element={<EditCuaHang />} />
         <Route path="/tcnd" element={<TCND />} />

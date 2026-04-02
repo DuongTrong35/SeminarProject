@@ -11,6 +11,8 @@ const UPLOAD_URL = "http://localhost:8080/api/upload"; // 🔥 API upload ảnh
 const navItems = [
   { to: "/admin", label: "Trang chủ", icon: "🏠" },
   { to: "/admin/qlch", label: "Quản lý cửa hàng", icon: "🏪" },
+  { to: "/admin/tours", label: "Quản lý Tour", icon: "📍" },
+  { to: "/admin/hopdong", label: "Duyệt cửa hàng", icon: "📝" },
 ];
 
 function AddCuaHang() {

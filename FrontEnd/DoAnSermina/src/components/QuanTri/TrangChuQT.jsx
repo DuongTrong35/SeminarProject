@@ -8,6 +8,8 @@ const API_URL = "http://localhost:8080/api/cuahang";
 const navItems = [
   { to: "/admin", label: "Trang chủ", icon: "🏠" },
   { to: "/admin/qlch", label: "Quản lý cửa hàng", icon: "🏪" },
+  { to: "/admin/tours", label: "Quản lý Tour", icon: "📍" },
+  { to: "/admin/hopdong", label: "Duyệt cửa hàng", icon: "📝" },
 ];
 
 function TrangChuQT() {
@@ -64,9 +66,9 @@ function TrangChuQT() {
       <aside className="cuahang-sidebar">
         <div className="cuahang-user">
           <div className="cuahang-avatar">
-            {user?.taikhoan?.[0]?.toUpperCase() || "A"}
+            {user?.username?.[0]?.toUpperCase() || "A"}
           </div>
-          <div>{user?.taikhoan}</div>
+          <div>{user?.username}</div>
         </div>
 
         {navItems.map((item) => (
@@ -83,7 +85,7 @@ function TrangChuQT() {
           </Link>
         ))}
 
-        <button className="cuahang-btn red" onClick={handleLogout}>
+        <button className="quantri-btn red" onClick={handleLogout}>
           Đăng xuất
         </button>
       </aside>

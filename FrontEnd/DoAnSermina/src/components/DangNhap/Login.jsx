@@ -9,22 +9,18 @@ import { useNavigate } from "react-router-dom";
 function Login() {
   const navigate = useNavigate();
   
-  // State cho Đăng nhập (Giữ nguyên của bạn)
+  // State cho Đăng nhập
   const [taikhoan, setTaikhoan] = useState("");
   const [matkhau, setMatkhau] = useState("");
-
-  // State MỚI: Dùng để chuyển đổi giữa form Đăng nhập và Đăng ký
   const [isRegister, setIsRegister] = useState(false);
 
-  // State MỚI: Cho form Đăng ký
+  // State cho Đăng ký (Rút gọn tối đa)
   const [regTaikhoan, setRegTaikhoan] = useState("");
   const [regMatkhau, setRegMatkhau] = useState("");
-  const [regRole, setRegRole] = useState("USER"); // Mặc định là Người dùng
+  const [regRole, setRegRole] = useState("USER"); 
 
-  // Hàm Đăng nhập (Giữ nguyên của bạn)
   const handleLogin = async (e) => {
     e.preventDefault();
-
     try {
       const response = await fetch("http://localhost:8080/login/xulydn", {
         method: "POST",
@@ -33,72 +29,53 @@ function Login() {
       });
 
       const text = await response.text();
-      console.log("Phản hồi từ server:", text);
-
-      if (response.status === 401) {
-        alert("Sai tài khoản hoặc mật khẩu");
-        return;
-      }
-
-      if (!response.ok) {
-        alert("Đăng nhập thất bại");
-        return;
-      }
+      if (response.status === 401) return alert("Sai tài khoản hoặc mật khẩu");
+      if (!response.ok) return alert("Đăng nhập thất bại");
 
       const data = JSON.parse(text);
-
-      console.log("USER LOGIN:", data);
-
-      const user = {
+      localStorage.setItem("user", JSON.stringify({
         id: data.id, 
-        iduser: data.iduser, 
-        taikhoan: data.taikhoan,
+        username: data.username,
         role: data.role,
-      };
+        goiDichVu: data.goiDichVu
+      }));
 
-      console.log("SAVE USER:", user);
+      if (data.role === "STORE") navigate("/store/home");
+      else if (data.role === "ADMIN") navigate("/admin");
+      else navigate("/homeuse");
 
-      localStorage.setItem("user", JSON.stringify(user));
-
-      if (user.role === "STORE") {
-        navigate("/store/home");
-      } else if (user.role === "ADMIN") {
-        navigate("/admin");
-      } else {
-        navigate("/homeuse");
-      }
     } catch (error) {
-      console.error("Lỗi khi đăng nhập:", error);
       alert("Lỗi kết nối server!");
     }
   };
 
-  // Hàm MỚI: Xử lý Đăng ký
   const handleRegister = async (e) => {
     e.preventDefault();
+
+    // Chỉ gửi đúng 3 trường dữ liệu cơ bản
+    const requestData = { 
+        taikhoan: regTaikhoan, 
+        matkhau: regMatkhau, 
+        role: regRole 
+    };
 
     try {
       const response = await fetch("http://localhost:8080/login/dangky", {
         method: "POST",
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        body: new URLSearchParams({ 
-          taikhoan: regTaikhoan, 
-          matkhau: regMatkhau, 
-          role: regRole 
-        }),
+        body: new URLSearchParams(requestData),
       });
 
       if (response.ok) {
-        alert("Đăng ký thành công! Bạn có thể đăng nhập ngay bây giờ.");
-        // Thành công thì chuyển về màn hình đăng nhập và xóa trắng form
+        alert(regRole === "STORE" ? "Đăng ký thành công! Vui lòng đăng nhập và vào quản lý để cập nhật thông tin quán." : "Đăng ký thành công! Bạn có thể đăng nhập ngay.");
         setIsRegister(false);
-        setRegTaikhoan("");
+        // Reset form
+        setRegTaikhoan(""); 
         setRegMatkhau("");
       } else {
-        alert("Đăng ký thất bại, tài khoản có thể đã tồn tại!");
+        alert("Đăng ký thất bại, tài khoản đã tồn tại hoặc lỗi dữ liệu!");
       }
     } catch (error) {
-      console.error("Lỗi khi đăng ký:", error);
       alert("Lỗi kết nối server!");
     }
   };
@@ -106,130 +83,62 @@ function Login() {
   return (
     <>
       <Navbar />
-
-      <div
-        className="Container"
-        style={{ backgroundImage: `url(${mhdn})` }}
-      >
+      <div className="Container" style={{ backgroundImage: `url(${mhdn})` }}>
         <div className="login-wrapper">
           <div className="custom-card p-4">
-            {/* Logo */}
-            <div className="text-center mb-3" style={{ marginBottom: '10px' }}>
+            <div className="text-center mb-3">
               <img src={logo} alt="logo" width="70" />
             </div>
 
-            {/* KIỂM TRA ĐIỀU KIỆN ĐỂ HIỂN THỊ FORM NÀO */}
             {!isRegister ? (
               /* ================= FORM ĐĂNG NHẬP ================= */
               <>
-                <div className="text-center mb-4" style={{ marginBottom: '20px' }}>
-                  <h4>Đăng nhập Konoha Market</h4>
-                  <small className="text-muted">
-                    Nếu cậu không thích số phận của mình, đừng chấp nhận nó.
-                  </small>
-                </div>
-
+                <div className="text-center mb-4"><h4>Đăng nhập Konoha Market</h4></div>
                 <form onSubmit={handleLogin}>
-                  <div className="mb-3 input-group" style={{ marginBottom: '10px' }}>
-                    <span className="input-group-text">
-                      <i className="fa fa-user"></i>
-                    </span>
-                    <input
-                      type="text"
-                      className="form-control"
-                      placeholder="Username"
-                      value={taikhoan}
-                      onChange={(e) => setTaikhoan(e.target.value)}
-                    />
+                  <div className="mb-3 input-group">
+                    <span className="input-group-text"><i className="fa fa-user"></i></span>
+                    <input type="text" className="form-control" placeholder="Username" value={taikhoan} onChange={(e) => setTaikhoan(e.target.value)} required/>
                   </div>
-
-                  <div className="mb-3 input-group" style={{ marginBottom: '10px' }}>
-                    <span className="input-group-text">
-                      <i className="fa fa-key"></i>
-                    </span>
-                    <input
-                      type="password"
-                      className="form-control"
-                      placeholder="Password"
-                      value={matkhau}
-                      onChange={(e) => setMatkhau(e.target.value)}
-                    />
+                  <div className="mb-3 input-group">
+                    <span className="input-group-text"><i className="fa fa-key"></i></span>
+                    <input type="password" className="form-control" placeholder="Password" value={matkhau} onChange={(e) => setMatkhau(e.target.value)} required/>
                   </div>
                   <div className="btn-login-group">
-                    <button type="submit" className="btn btn-primary w-100">Sign In</button>
-                    {/* Thêm type="button" và sự kiện onClick để chuyển sang Đăng ký */}
+                    <button type="submit" className="btn btn-primary w-100 mb-2">Sign In</button>
                     <button type="button" className="btn btn-second w-100" onClick={() => setIsRegister(true)}>Register</button>
-                  </div>
-                  <div className="text-center mt-3">
-                    <a href="/forgotpassword">Forgot Password?</a>
                   </div>
                 </form>
               </>
             ) : (
-              /* ================= FORM ĐĂNG KÝ ================= */
+              /* ================= FORM ĐĂNG KÝ (Rút gọn) ================= */
               <>
-                <div className="text-center mb-4" style={{ marginBottom: '20px' }}>
-                  <h4>Đăng ký Konoha Market</h4>
-                  <small className="text-muted">
-                    Tạo tài khoản mới để tham gia cùng chúng tôi.
-                  </small>
-                </div>
-
+                <div className="text-center mb-4"><h4>Đăng ký Konoha Market</h4></div>
                 <form onSubmit={handleRegister}>
-                  {/* Trường Chọn Role */}
-                  <div className="mb-3 input-group" style={{ marginBottom: '10px' }}>
-                    <span className="input-group-text">
-                      <i className="fa fa-id-badge"></i>
-                    </span>
-                    <select 
-                      className="select-role" 
-                      value={regRole} 
-                      onChange={(e) => setRegRole(e.target.value)}
-                      style={{ cursor: 'pointer' }}
-                    >
+                  <div className="mb-3 input-group">
+                    <span className="input-group-text"><i className="fa fa-id-badge"></i></span>
+                    <select className="select-role" value={regRole} onChange={(e) => setRegRole(e.target.value)}>
                       <option value="USER">Người dùng (Khách hàng)</option>
                       <option value="STORE">Quán ăn (Cửa hàng)</option>
                     </select>
                   </div>
 
-                  {/* Username */}
-                  <div className="mb-3 input-group" style={{ marginBottom: '10px' }}>
-                    <span className="input-group-text">
-                      <i className="fa fa-user"></i>
-                    </span>
-                    <input
-                      type="text"
-                      className="form-control"
-                      placeholder="Username"
-                      value={regTaikhoan}
-                      onChange={(e) => setRegTaikhoan(e.target.value)}
-                      required
-                    />
+                  <div className="mb-3 input-group">
+                    <span className="input-group-text"><i className="fa fa-user"></i></span>
+                    <input type="text" className="form-control" placeholder="Username" value={regTaikhoan} onChange={(e) => setRegTaikhoan(e.target.value)} required />
+                  </div>
+                  
+                  <div className="mb-3 input-group">
+                    <span className="input-group-text"><i className="fa fa-key"></i></span>
+                    <input type="password" className="form-control" placeholder="Password" value={regMatkhau} onChange={(e) => setRegMatkhau(e.target.value)} required />
                   </div>
 
-                  {/* Password */}
-                  <div className="mb-3 input-group" style={{ marginBottom: '10px' }}>
-                    <span className="input-group-text">
-                      <i className="fa fa-key"></i>
-                    </span>
-                    <input
-                      type="password"
-                      className="form-control"
-                      placeholder="Password"
-                      value={regMatkhau}
-                      onChange={(e) => setRegMatkhau(e.target.value)}
-                      required
-                    />
-                  </div>
-
-                  <div className="btn-login-group">
-                    <button type="submit" className="btn btn-primary w-100">Confirm</button>
+                  <div className="btn-login-group mt-4">
+                    <button type="submit" className="btn btn-primary w-100 mb-2">Confirm</button>
                     <button type="button" className="btn btn-second w-100" onClick={() => setIsRegister(false)}>Back</button>
                   </div>
                 </form>
               </>
             )}
-
           </div>
         </div>
       </div>

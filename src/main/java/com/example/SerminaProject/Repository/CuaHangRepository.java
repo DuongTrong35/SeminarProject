@@ -12,4 +12,6 @@ public interface CuaHangRepository extends JpaRepository<CuaHang, String> {
     List<CuaHang> findByIduser(Long iduser);
 
     List<CuaHang> findByTenContainingIgnoreCase(String keyword);
+
+    List<CuaHang> findByTrangThai(Integer trangThai);
 }
