@@ -25,22 +25,25 @@ public class CuaHangService {
         return repository.save(ch);
     }
 
-    public CuaHang update(String id, CuaHang ch) {
+public CuaHang update(String id, CuaHang ch) {
         CuaHang old = repository.findById(id).orElse(null);
         if (old == null) return null;
 
-        old.setTen(ch.getTen());
-        old.setDanhmuc(ch.getDanhmuc());
-        old.setDiaChi(ch.getDiaChi());
-        old.setMoTa(ch.getMoTa());
-        old.setBankinh(ch.getBankinh());
-        old.setImageThumbnail(ch.getImageThumbnail());
-        old.setImageBanner(ch.getImageBanner());
-        old.setLat(ch.getLat());
-        old.setLng(ch.getLng());
-        old.setNgonngu(ch.getNgonngu());
-        old.setTrangThai(ch.getTrangThai());
-        old.setIduser(ch.getIduser());
+        // BỌC GIÁP CHỐNG NULL: Chỉ update khi Frontend có gửi dữ liệu lên
+        if (ch.getTen() != null) old.setTen(ch.getTen());
+        if (ch.getDanhmuc() != null) old.setDanhmuc(ch.getDanhmuc());
+        if (ch.getDiaChi() != null) old.setDiaChi(ch.getDiaChi());
+        if (ch.getMoTa() != null) old.setMoTa(ch.getMoTa());
+        if (ch.getBankinh() != null) old.setBankinh(ch.getBankinh());
+        if (ch.getImageThumbnail() != null) old.setImageThumbnail(ch.getImageThumbnail());
+        if (ch.getImageBanner() != null) old.setImageBanner(ch.getImageBanner());
+        if (ch.getLat() != null) old.setLat(ch.getLat());
+        if (ch.getLng() != null) old.setLng(ch.getLng());
+        if (ch.getNgonngu() != null) old.setNgonngu(ch.getNgonngu());
+        if (ch.getIduser() != null) old.setIduser(ch.getIduser());
+
+        // 🔥 MA THUẬT NGHIỆP VỤ: Cứ Update là đạp về trạng thái 0 (Chờ duyệt)
+        old.setTrangThai(0);
 
         return repository.save(old);
     }
