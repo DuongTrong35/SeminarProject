@@ -5,7 +5,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 @Entity
@@ -27,7 +26,7 @@ public class Tour {
     private String moTa;
 
     @Column(name = "gia")
-    private BigDecimal gia;
+    private Double gia;
 
     // getter setter
 
@@ -55,11 +54,11 @@ public class Tour {
         this.moTa = moTa;
     }
 
-    public BigDecimal getGia() {
+    public Double getGia() {
         return gia;
     }
 
-    public void setGia(BigDecimal gia) {
+    public void setGia(Double gia) {
         this.gia = gia;
     }
 }

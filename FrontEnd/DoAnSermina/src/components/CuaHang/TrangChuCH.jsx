@@ -118,7 +118,7 @@ function TrangChuCH() {
 
             {/* ẢNH */}
             <img
-              src={store.imageThumbnail ? (store.imageThumbnail.startsWith("http") ? store.imageThumbnail : `http://localhost:8080/uploads/${store.imageThumbnail}`) : "https://placehold.co/400x300?text=Chua+Co+Anh"}
+              src={`/images/Store/${store.imageThumbnail}`}
               alt="Ảnh cửa hàng"
               className="store-image"
             />
