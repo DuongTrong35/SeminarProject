@@ -60,4 +60,8 @@ public class CuaHangService {
     public CuaHang getById(String id) {
         return repository.findById(id).orElse(null);
     }
+
+    public CuaHang findById(String id) {
+        return repository.findById(id).orElse(null);
+    }
 }

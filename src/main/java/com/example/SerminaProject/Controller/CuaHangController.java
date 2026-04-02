@@ -32,8 +32,14 @@ public class CuaHangController {
     }
 
     @GetMapping("/{id}")
-    public CuaHang getById(@PathVariable String id) {
-        return service.getById(id);
+    public ResponseEntity<CuaHang> getById(@PathVariable String id) {
+        CuaHang ch = service.getById(id);
+
+        if (ch == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.ok(ch);
     }
 
     @GetMapping("/user/{iduser}")
@@ -118,4 +124,6 @@ public class CuaHangController {
             }
         }
     }
+
+
 }
