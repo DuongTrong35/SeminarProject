@@ -40,12 +40,11 @@ public class TourService {
     // 3. Tạo Tour mới (Kèm theo lộ trình)
     @Transactional // Đảm bảo lưu thành công cả Tour và Lịch trình, nếu lỗi 1 cái là Hủy hết
                    // (Rollback)
-    @Transactional // Đảm bảo lưu thành công cả Tour và Lịch trình, nếu lỗi 1 cái là Hủy hết (Rollback)
     public Tour createTour(TourRequestDTO dto) {
         Tour tour = new Tour();
         tour.setTenTour(dto.getTenTour());
         tour.setMoTa(dto.getMoTa());
-        tour.setGia(dto.getGia());
+//        tour.setGia(dto.getGia());
 
         List<LichTrinhTour> lichTrinhList = new ArrayList<>();
 
@@ -91,7 +90,7 @@ public class TourService {
         // BƯỚC 2: Cập nhật các thông tin cơ bản
         existingTour.setTenTour(dto.getTenTour());
         existingTour.setMoTa(dto.getMoTa());
-        existingTour.setGia(dto.getGia());
+//        existingTour.setGia(dto.getGia());
 
         // BƯỚC 3: Xóa lộ trình cũ
         // Mình clear() cái list cũ đi. Nhờ dòng 'orphanRemoval = true' trong Entity

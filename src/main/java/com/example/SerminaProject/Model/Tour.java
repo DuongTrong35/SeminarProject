@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Entity
@@ -25,7 +26,7 @@ public class Tour {
     private String moTa;
 
     @Column(name = "gia")
-    private Double gia;
+    private BigDecimal gia;
 
     // Quan hệ 1-Nhiều với bảng Lịch Trình Tour
     // orphanRemoval = true: Nếu xóa Tour, tự động xóa luôn các trạm bên trong
@@ -58,11 +59,11 @@ public class Tour {
         this.moTa = moTa;
     }
 
-    public Double getGia() {
+    public BigDecimal getGia() {
         return gia;
     }
 
-    public void setGia(Double gia) {
+    public void setGia(BigDecimal gia) {
         this.gia = gia;
     }
 

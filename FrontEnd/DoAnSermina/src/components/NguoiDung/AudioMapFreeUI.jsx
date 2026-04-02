@@ -1,7 +1,7 @@
 import "./AudioMapFreeUI.css";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-
+import { Circle } from "react-leaflet";
 // Leaflet
 import {
   MapContainer,
@@ -48,9 +48,12 @@ function AudioMapFreeUI() {
     
 //   const [position, setPosition] = useState([10.76, 106.7]);
   const [showLang, setShowLang] = useState(false);
-  const [shop, setShop] = useState(null);
+const [shops, setShops] = useState([]);
   const [route, setRoute] = useState([]);
   const [isSpeaking, setIsSpeaking] = useState(false);
+
+const [selectedShop, setSelectedShop] = useState(null);
+
 
   const moveStep = 0.0005; // độ nhảy (có thể chỉnh lớn nhỏ)
 
@@ -194,18 +197,17 @@ useEffect(() => {
 }, []);
   // 🔥 API
   useEffect(() => {
-    axios
-      .get("http://localhost:8080/api/cuahang/ch1")
-      .then((res) => setShop(res.data))
-      .catch((err) => console.error(err));
-  }, []);
+  axios
+    .get("http://localhost:8080/api/cuahang")
+    .then((res) => setShops(res.data))
+    .catch((err) => console.error(err));
+}, []);
 
   // 🔥 ROUTE
   useEffect(() => {
-    if (!shop) return;
+    if (!selectedShop) return;
 
-    const url = `https://router.project-osrm.org/route/v1/driving/${position[1]},${position[0]};${shop.lng},${shop.lat}?overview=full&geometries=geojson`;
-
+const url = `https://router.project-osrm.org/route/v1/driving/${position[1]},${position[0]};${selectedShop.lng},${selectedShop.lat}?overview=full&geometries=geojson`;
     fetch(url)
       .then((res) => res.json())
       .then((data) => {
@@ -213,8 +215,45 @@ useEffect(() => {
         const coords = data.routes[0].geometry.coordinates;
         setRoute(coords.map((c) => [c[1], c[0]]));
       });
-  }, [shop, position]);
+  }, [selectedShop, position]);
 
+
+ const visibleShops = shops.filter((s) => {
+  const distance = getDistance(
+    position[0],
+    position[1],
+    s.lat,
+    s.lng
+  );
+
+  return distance <= s.bankinh / 1000;
+});
+useEffect(() => {
+  if (!visibleShops.length) {
+    setSelectedShop(null);
+    return;
+  }
+
+  let nearest = visibleShops[0];
+  let minDistance = Infinity;
+
+  visibleShops.forEach((s) => {
+    const d = getDistance(
+      position[0],
+      position[1],
+      s.lat,
+      s.lng
+    );
+
+    if (d < minDistance) {
+      minDistance = d;
+      nearest = s;
+    }
+  });
+
+  setSelectedShop(nearest);
+
+}, [position, visibleShops]);
   // 🔥 DISTANCE
   function getDistance(lat1, lon1, lat2, lon2) {
     const R = 6371;
@@ -229,15 +268,20 @@ useEffect(() => {
 
     return R * (2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a)));
   }
-
-  const distance =
-    shop && getDistance(position[0], position[1], shop.lat, shop.lng);
+const distance =
+  selectedShop &&
+  getDistance(
+    position[0],
+    position[1],
+    selectedShop.lat,
+    selectedShop.lng
+  );
 
   const dbLanguages =
-    shop?.ngonngu?.split(",").map((l) => ({
-      code: l,
-      label: l,
-    })) || [];
+  selectedShop?.ngonngu?.split(",").map((l) => ({
+    code: l,
+    label: l,
+  })) || [];
 
   const [floatingLang, setFloatingLang] = useState({
     code: "VN",
@@ -271,11 +315,19 @@ useEffect(() => {
             <Popup>Vị trí của bạn</Popup>
           </Marker>
 
-          {shop && (
-            <Marker position={[shop.lat, shop.lng]} icon={redIcon}>
-              <Popup>{shop.ten}</Popup>
-            </Marker>
-          )}
+        {visibleShops.map((s, index) => (
+  <React.Fragment key={index}>
+    <Marker position={[s.lat, s.lng]} icon={redIcon}>
+      <Popup>{s.ten}</Popup>
+    </Marker>
+
+    <Circle
+      center={[s.lat, s.lng]}
+      radius={s.bankinh}
+      pathOptions={{ color: "red" }}
+    />
+  </React.Fragment>
+))}
 
           {route.length > 0 && <Polyline positions={route} color="blue" />}
         </MapContainer>
@@ -311,7 +363,7 @@ useEffect(() => {
 
       <div className="amui-panel">
         <div className="amui-panel-header">
-          <h2>{shop?.ten || "Đang tải..."}</h2>
+          <h2>{selectedShop?.ten || "Đang tải..."}</h2>
           <p>
             {distance
               ? `${distance.toFixed(2)} km từ vị trí của bạn`
@@ -329,7 +381,7 @@ useEffect(() => {
             </button>
           ))}
         </div>
-        <p className="amui-description">{shop?.moTa || "Đang tải mô tả..."}</p>
+        <p className="amui-description">{selectedShop?.moTa || "Đang tải mô tả..."}</p>
         {/* 🔊 PLAYER */}
         <div className="amui-player">
           <div className="amui-status">
@@ -340,7 +392,7 @@ useEffect(() => {
             <button
               className="amui-replay"
               onClick={() =>
-                speakText(shop?.moTa, panelLang === "Tiếng Việt" ? "vi" : "en")
+                speakText(selectedShop?.moTa, panelLang === "Tiếng Việt" ? "vi" : "en")
               }
             >
               Phát lại
@@ -357,7 +409,7 @@ useEffect(() => {
         </div>
         <div className="amui-playing">
           <span>ĐANG PHÁT</span>
-          <strong>{shop?.ten}</strong>
+          <strong>{selectedShop?.ten}</strong>
         </div>
         <button className="amui-start-btn" onClick={startSimulation}>
           ▶ Bắt đầu
