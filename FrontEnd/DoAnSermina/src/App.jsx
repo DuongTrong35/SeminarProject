@@ -21,6 +21,8 @@ import AddCuaHang from "./components/QuanTri/CuaHang/AddCuaHang";
 import EditCuaHang from "./components/QuanTri/CuaHang/EditCuaHang";
 import TCND from "./components/NguoiDung/TCNguoiDung";
 import Mhad from "./components/QuanTri/Dashboard";
+import MHuser from "./components/NguoiDung/AudioMapUI";
+
 import POIForm from "./components/POIForm";
 import DuyetCuaHang from './components/QuanTri/CuaHang/DuyetCuaHang';
 // import Dashboard from "./components/QuanTri/Dashboard";

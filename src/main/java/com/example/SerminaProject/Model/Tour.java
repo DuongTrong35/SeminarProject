@@ -13,23 +13,53 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+
 public class Tour {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(name = "ten_tour", nullable = false)
+    @Column(name = "ten_tour")
     private String tenTour;
 
-    @Column(name = "mo_ta", columnDefinition = "TEXT")
+    @Column(name = "mo_ta")
     private String moTa;
 
     @Column(name = "gia")
     private BigDecimal gia;
 
-    // Quan hệ 1-Nhiều với bảng Lịch Trình Tour
-    // orphanRemoval = true: Nếu xóa Tour, tự động xóa luôn các trạm bên trong
-    @OneToMany(mappedBy = "tour", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<LichTrinhTour> lichTrinhTours;
+    // getter setter
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getTenTour() {
+        return tenTour;
+    }
+
+    public void setTenTour(String tenTour) {
+        this.tenTour = tenTour;
+    }
+
+    public String getMoTa() {
+        return moTa;
+    }
+
+    public void setMoTa(String moTa) {
+        this.moTa = moTa;
+    }
+
+    public BigDecimal getGia() {
+        return gia;
+    }
+
+    public void setGia(BigDecimal gia) {
+        this.gia = gia;
+    }
 }
