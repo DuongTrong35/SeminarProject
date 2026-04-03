@@ -3,7 +3,15 @@ import "./Dashboard.css";
 import POIForm from "../QuanTri/POIForm";
 import POIFix from "../QuanTri/POIFix";
 import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link,useLocation, useNavigate } from "react-router-dom";
+
+const navItems = [
+  { to: "/admin", label: "Trang chủ", icon: "🏠" },
+    { to: "/mhad", label: "Thêm POI", icon: "🔍" },
+  { to: "/admin/qlch", label: "Quản lý cửa hàng", icon: "🏪" },
+  { to: "/admin/tours", label: "Quản lý Tour", icon: "📍" },
+  { to: "/admin/hopdong", label: "Duyệt cửa hàng", icon: "📝" },
+];
 function Dashboard() {
   const [pois, setPois] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
@@ -11,6 +19,7 @@ function Dashboard() {
   const [editingPOI, setEditingPOI] = useState(null);
   const [user, setUser] = useState(null);
   const navigate = useNavigate();
+  const { pathname } = useLocation();
 
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
@@ -77,7 +86,33 @@ function Dashboard() {
   return (
     <div className="poi-layout">
       {/* SIDEBAR */}
-      <div className="sidebar">
+      <aside className="cuahang-sidebar">
+        <div className="cuahang-user">
+          <div className="cuahang-avatar">
+            {user?.username?.[0]?.toUpperCase() || "A"}
+          </div>
+          <div>{user?.username}</div>
+        </div>
+
+        {navItems.map((item) => (
+          <Link
+            key={item.to}
+            to={item.to}
+            className={
+              pathname === item.to
+                ? "cuahang-link active"
+                : "cuahang-link"
+            }
+          >
+            {item.icon} {item.label}
+          </Link>
+        ))}
+
+        <button className="quantri-btn red" onClick={handleLogout}>
+          Đăng xuất
+        </button>
+      </aside>
+      {/* <div className="sidebar">
         <div className="logo">
           <div className="logo-icon">VK</div>
           <div>
@@ -111,7 +146,7 @@ function Dashboard() {
             ⏻
           </button>
         </div>
-      </div>
+      </div> */}
 
       {/* MAIN */}
       <div className="main">

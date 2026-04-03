@@ -42,7 +42,7 @@ function Login() {
 
       if (data.role === "STORE") navigate("/store/home");
       else if (data.role === "ADMIN") navigate("/admin");
-      else navigate("/homeuse");
+      else navigate("/mhuser");
 
     } catch (error) {
       alert("Lỗi kết nối server!");

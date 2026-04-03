@@ -5,6 +5,8 @@ import '../../QuanTri/TrangChuQT.css'; // Chỉnh lại đường dẫn CSS này
 // Mảng navItems phải có đủ 3 menu
 const navItems = [
     { to: "/admin", label: "Trang chủ", icon: "🏠" },
+        { to: "/mhad", label: "Thêm POI", icon: "🔍" },
+
     { to: "/admin/qlch", label: "Quản lý cửa hàng", icon: "🏪" },
     { to: "/admin/tours", label: "Quản lý Tour", icon: "📍" },
     { to: "/admin/hopdong", label: "Duyệt cửa hàng", icon: "📝" },
