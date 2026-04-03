@@ -144,7 +144,7 @@
 .amui-lang-floating {
   position: absolute;
   top: 12px;
-  right: 12px; /* QUAN TRỌNG: ép sang phải */
+  right: 100px !important; /* QUAN TRỌNG: ép sang phải */
 
   display: flex;
   align-items: center;
@@ -359,4 +359,23 @@
 
 .amui-tour-btn:hover {
   background: #132c5c;
+}
+
+.amui-back-floating {
+  margin-right: 180px;
+  background: #fff;
+  border: none;
+
+  padding: 8px 10px;
+  border-radius: 50%;
+
+  font-size: 14px;
+  cursor: pointer;
+
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+  transition: 0.2s;
+}
+
+.amui-back-floating:hover {
+  background: #eee;
 }

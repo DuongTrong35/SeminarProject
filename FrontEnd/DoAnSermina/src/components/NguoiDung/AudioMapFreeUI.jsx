@@ -2,6 +2,8 @@ import "./AudioMapFreeUI.css";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Circle } from "react-leaflet";
+import { useNavigate } from "react-router-dom";
+
 // Leaflet
 import {
   MapContainer,
@@ -44,6 +46,8 @@ function RecenterMap({ position }) {
 }
 
 function AudioMapFreeUI() {
+    const navigate = useNavigate();
+  
       const [position, setPosition] = useState([10.761992635455506, 106.7022316837637]);
     
 //   const [position, setPosition] = useState([10.76, 106.7]);
@@ -333,7 +337,11 @@ const distance =
         </MapContainer>
 
         <div className="amui-map-overlay">GPS đang bật</div>
-
+ <button
+    className="amui-back-floating"
+onClick={() => navigate("/mhuser")}  >
+    QUAY LẠI
+  </button>
         <div
           className="amui-lang-floating"
           onClick={() => setShowLang(!showLang)}

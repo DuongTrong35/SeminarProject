@@ -363,6 +363,12 @@ const startSimulation = () => {
 
         {/* ⭐ GROUP TOP RIGHT */}
         <div className="amui-top-right-controls">
+          <button
+    className="amui-back-floating"
+onClick={() => navigate("/login")}  
+  >
+    Đăng xuất
+  </button>
           {/* 🌐 LANGUAGE */}
           <div
             className="amui-lang-floating"
@@ -448,7 +454,7 @@ const startSimulation = () => {
 
         <div className="amui-playing">
           <span>ĐANG PHÁT</span>
-          <strong>{shop?.ten}</strong>
+          <strong>{shop?.moTa || "Đang tải mô tả..."}</strong>
         </div>
 
 <button 

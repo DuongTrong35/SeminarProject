@@ -251,3 +251,23 @@
   background: #eee;
   cursor: pointer;
 }
+
+.amui-back-floating {
+position: absolute;
+    top: 12px;
+    right: 80px!important; /* QUAN TRỌNG: ép sang phải, tránh chồng lên language */
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: #fff;
+    padding: 8px 12px;
+    border-radius: 20px;
+    font-size: 13px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+    cursor: pointer;
+    z-index: 1000;
+}
+
+.amui-back-floating:hover {
+  background: #eee;
+}
