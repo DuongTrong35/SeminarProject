@@ -3,7 +3,16 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Circle } from "react-leaflet";
 import { useNavigate } from "react-router-dom";
-
+import { useMapEvents } from "react-leaflet";
+function MapClickHandler({ setPosition }) {
+  useMapEvents({
+    click(e) {
+      const { lat, lng } = e.latlng;
+      setPosition([lat, lng]); // 👈 cập nhật vị trí marker xanh
+    },
+  });
+  return null;
+}
 // Leaflet
 import { MapContainer, TileLayer, Marker, Popup, Polyline, useMap } from "react-leaflet";
 import L from "leaflet";
@@ -68,7 +77,7 @@ function AudioMapFreeUI() {
   const [displayTitle, setDisplayTitle] = useState("");
   const [displayDesc, setDisplayDesc] = useState("");
 
-  const moveStep = 0.0005;
+  const moveStep = 0.0001;
   const moveUp = () => setPosition([position[0] + moveStep, position[1]]);
   const moveDown = () => setPosition([position[0] - moveStep, position[1]]);
   const moveLeft = () => setPosition([position[0], position[1] - moveStep]);
@@ -88,23 +97,27 @@ function AudioMapFreeUI() {
       i++;
     }, 500);
   };
+useEffect(() => {
+  if (!navigator.geolocation) {
+    alert("Trình duyệt không hỗ trợ GPS");
+    return;
+  }
 
-  useEffect(() => {
-  if (!navigator.geolocation) return;
-
-  const watchId = navigator.geolocation.watchPosition(
+  navigator.geolocation.getCurrentPosition(
     (pos) => {
-      setPosition([pos.coords.latitude, pos.coords.longitude]);
+      const lat = pos.coords.latitude;
+      const lng = pos.coords.longitude;
+
+      setPosition([lat, lng]);
     },
-    (err) => console.error(err),
+    (err) => {
+      console.error("❌ Lỗi GPS:", err);
+      alert("Không lấy được vị trí");
+    },
     {
-      enableHighAccuracy: true,
-      maximumAge: 0,
-      timeout: 5000
+      enableHighAccuracy: true
     }
   );
-
-  return () => navigator.geolocation.clearWatch(watchId);
 }, []);
   useEffect(() => {
     window.speechSynthesis.getVoices();
@@ -247,10 +260,17 @@ const visibleShops = shops;
           <button onClick={moveLeft}>◀</button><div></div><button onClick={moveRight}>▶</button>
           <div></div><button onClick={moveDown}>▼</button><div></div>
         </div>
-        <MapContainer center={position} zoom={15} style={{ height: "100%" }}>
-          <RecenterMap position={position} />
-          <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-          <Marker position={position} icon={blueIcon}><Popup>Vị trí của bạn</Popup></Marker>
+       <MapContainer center={position} zoom={15} style={{ height: "100%" }}>
+  <RecenterMap position={position} />
+
+  {/* 👇 THÊM DÒNG NÀY */}
+  <MapClickHandler setPosition={setPosition} />
+
+  <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+
+  <Marker position={position} icon={blueIcon}>
+    <Popup>Vị trí bạn chọn</Popup>
+  </Marker>
           {visibleShops.map((s, index) => (
             <React.Fragment key={index}>
               <Marker position={[s.lat, s.lng]} icon={redIcon}><Popup>{s.ten}</Popup></Marker>
@@ -307,7 +327,7 @@ const visibleShops = shops;
           <span>ĐANG PHÁT</span>
           <strong>{displayDesc}</strong>
         </div>
-        <button className="amui-start-btn" onClick={startSimulation}>▶ Bắt đầu</button>
+        {/* <button className="amui-start-btn" onClick={startSimulation}>▶ Bắt đầu</button> */}
       </div>
     </div>
   );
