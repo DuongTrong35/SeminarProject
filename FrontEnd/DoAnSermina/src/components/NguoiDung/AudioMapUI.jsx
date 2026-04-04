@@ -86,7 +86,6 @@ const startSimulation = () => {
   
   const [tours, setTours] = useState([]);
   useEffect(() => {
-    axios;
     axios
       .get("http://localhost:8080/api/admin/tours")
       .then((res) => {
