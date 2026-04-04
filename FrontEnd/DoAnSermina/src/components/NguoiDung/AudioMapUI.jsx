@@ -498,7 +498,7 @@ speakText(displayDesc, langCodeMap[panelLang])              }
 
         <div className="amui-playing">
           <span>ĐANG PHÁT</span>
-          <strong>{shop?.ten}</strong>
+          <strong>{displayDesc}</strong>
         </div>
 
 <button 

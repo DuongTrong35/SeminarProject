@@ -51,7 +51,9 @@ function AudioMapFreeUI() {
   const navigate = useNavigate();
 
   // TẤT CẢ CÁC STATE NẰM Ở ĐÂY
-  const [position, setPosition] = useState([10.761992635455506, 106.7022316837637]);
+  // const [position, setPosition] = useState([10.761992635455506, 106.7022316837637]);
+    const [position, setPosition] = useState([10.76, 106.7]);
+  
   const [showLang, setShowLang] = useState(false);
   const [shops, setShops] = useState([]);
   const [route, setRoute] = useState([]);
@@ -87,6 +89,23 @@ function AudioMapFreeUI() {
     }, 500);
   };
 
+  useEffect(() => {
+  if (!navigator.geolocation) return;
+
+  const watchId = navigator.geolocation.watchPosition(
+    (pos) => {
+      setPosition([pos.coords.latitude, pos.coords.longitude]);
+    },
+    (err) => console.error(err),
+    {
+      enableHighAccuracy: true,
+      maximumAge: 0,
+      timeout: 5000
+    }
+  );
+
+  return () => navigator.geolocation.clearWatch(watchId);
+}, []);
   useEffect(() => {
     window.speechSynthesis.getVoices();
     window.speechSynthesis.onvoiceschanged = () => window.speechSynthesis.getVoices();
@@ -286,7 +305,7 @@ const visibleShops = shops;
 
         <div className="amui-playing">
           <span>ĐANG PHÁT</span>
-          <strong>{displayTitle}</strong>
+          <strong>{displayDesc}</strong>
         </div>
         <button className="amui-start-btn" onClick={startSimulation}>▶ Bắt đầu</button>
       </div>
