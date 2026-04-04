@@ -4,10 +4,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
-import java.net.URLDecoder;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/translate")
@@ -20,26 +18,36 @@ public class TranslateController {
             @RequestParam(defaultValue = "en") String to
     ) {
         try {
-            String url = "https://translate.googleapis.com/translate_a/single?client=gtx&sl=auto&tl="
-                    + to
-                    + "&dt=t&q="
-                    + URLEncoder.encode(text, StandardCharsets.UTF_8);
+            // 1. DÙNG BIẾN {to} VÀ {text} ĐỂ REST_TEMPLATE TỰ ĐỘNG ENCODE
+            String url = "https://translate.googleapis.com/translate_a/single?client=gtx&sl=auto&tl={to}&dt=t&q={text}";
 
             RestTemplate restTemplate = new RestTemplate();
-            String response = restTemplate.getForObject(url, String.class);
 
-            String translated = response.split("\"")[1];
+            // 2. ÉP SPRING BOOT ĐỌC JSON BẰNG LIST CHUẨN CỦA JAVA (Né thư viện ngoài)
+            List<?> response = restTemplate.getForObject(url, List.class, to, text);
 
-            // 🔥 QUAN TRỌNG
-            translated = URLDecoder.decode(translated, StandardCharsets.UTF_8);
+            StringBuilder translated = new StringBuilder();
+
+            // 3. BÓC TÁCH MẢNG NESTED ĐỂ LẤY ĐÚNG CHỮ ĐÃ DỊCH
+            if (response != null && !response.isEmpty() && response.get(0) instanceof List) {
+                List<?> sentences = (List<?>) response.get(0);
+                for (Object sentenceObj : sentences) {
+                    if (sentenceObj instanceof List) {
+                        List<?> sentenceDetails = (List<?>) sentenceObj;
+                        if (!sentenceDetails.isEmpty() && sentenceDetails.get(0) != null) {
+                            translated.append(sentenceDetails.get(0).toString());
+                        }
+                    }
+                }
+            }
 
             return ResponseEntity.ok().body(
-                    java.util.Map.of("translatedText", translated)
+                    Map.of("translatedText", translated.toString())
             );
 
         } catch (Exception e) {
             e.printStackTrace();
-            return ResponseEntity.status(500).body("Translate lỗi");
+            return ResponseEntity.status(500).body(Map.of("translatedText", "Translate lỗi API"));
         }
     }
 }

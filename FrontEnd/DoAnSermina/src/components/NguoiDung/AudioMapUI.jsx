@@ -46,15 +46,63 @@ function RecenterMap({ position }) {
 
 function AudioMapUI() {
   const navigate = useNavigate();
-  const [position, setPosition] = useState([10.761992635455506, 106.7022316837637]);
-  // const [position, setPosition] = useState([10.76, 106.7]);
+  // const [position, setPosition] = useState([10.761992635455506, 106.7022316837637]);
+  const [position, setPosition] = useState([10.76, 106.7]);
   const [showLang, setShowLang] = useState(false);
   const [shop, setShop] = useState(null);
   const [route, setRoute] = useState([]);
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [audioObj, setAudioObj] = useState(null);
   const [tourShops, setTourShops] = useState([]);
+const [displayDesc, setDisplayDesc] = useState("");
+const [displayTitle, setDisplayTitle] = useState("");
+  const [panelLang, setPanelLang] = useState("Tiếng Việt");
 
+const langCodeMap = {
+  "Tiếng Việt": "vi",
+  "English": "en",
+  "French": "fr",
+  "Spanish": "es",
+  "Japanese": "ja",
+  "Korean": "ko",
+};
+useEffect(() => {
+  if (!shop) {
+    setDisplayTitle("Đang tải...");
+    setDisplayDesc("Đang tải mô tả...");
+    return;
+  }
+
+  // giữ nguyên tên
+  setDisplayTitle(shop.ten);
+
+  const targetLangCode = langCodeMap[panelLang] || "vi";
+
+  if (targetLangCode === "vi") {
+    setDisplayDesc(shop.moTa);
+  } else {
+    setDisplayDesc(`Đang dịch sang ${panelLang}...`);
+
+    const fetchTranslate = async () => {
+      try {
+        const res = await fetch(
+          `http://localhost:8080/api/translate?text=${encodeURIComponent(
+            shop.moTa
+          )}&to=${targetLangCode}`
+        );
+
+        const data = await res.json();
+
+        setDisplayDesc(data.translatedText || "Lỗi dịch");
+      } catch (err) {
+        console.error(err);
+        setDisplayDesc("Lỗi dịch!");
+      }
+    };
+
+    fetchTranslate();
+  }
+}, [shop, panelLang]);
   const [isMoving, setIsMoving] = useState(false);
 const startSimulation = () => {
   if (!route.length) return;
@@ -86,7 +134,6 @@ const startSimulation = () => {
   
   const [tours, setTours] = useState([]);
   useEffect(() => {
-    axios;
     axios
       .get("http://localhost:8080/api/admin/tours")
       .then((res) => {
@@ -100,7 +147,6 @@ const startSimulation = () => {
     label: "Tiếng Việt",
   });
 
-  const [panelLang, setPanelLang] = useState("Tiếng Việt");
 
   useEffect(() => {
     window.speechSynthesis.getVoices();
@@ -108,20 +154,20 @@ const startSimulation = () => {
       window.speechSynthesis.getVoices();
   }, []);
 
+//   useEffect(() => {
+//   setPosition([10.761992635455506, 106.7022316837637]);
+// }, []);
   useEffect(() => {
-  setPosition([10.761992635455506, 106.7022316837637]);
-}, []);
-  // useEffect(() => {
-  //   const watchId = navigator.geolocation.watchPosition(
-  //     (pos) => {
-  //       setPosition([pos.coords.latitude, pos.coords.longitude]);
-  //     },
-  //     (err) => console.error(err),
-  //     { enableHighAccuracy: true }
-  //   );
+    const watchId = navigator.geolocation.watchPosition(
+      (pos) => {
+        setPosition([pos.coords.latitude, pos.coords.longitude]);
+      },
+      (err) => console.error(err),
+      { enableHighAccuracy: true }
+    );
 
-  //   return () => navigator.geolocation.clearWatch(watchId);
-  // }, []);
+    return () => navigator.geolocation.clearWatch(watchId);
+  }, []);
 
   useEffect(() => {
     if (!selectedTour) return;
@@ -429,8 +475,7 @@ onClick={() => navigate("/login")}
           ))}
         </div>
 
-        <p className="amui-description">{shop?.moTa || "Đang tải mô tả..."}</p>
-
+<p className="amui-description">{displayDesc}</p>
         <div className="amui-player">
           <div className="amui-status">
             {isSpeaking ? "Đang phát..." : "Đã phát xong"}
@@ -440,8 +485,7 @@ onClick={() => navigate("/login")}
             <button
               className="amui-replay"
               onClick={() =>
-                speakText(shop?.moTa, panelLang === "Tiếng Việt" ? "vi" : "en")
-              }
+speakText(displayDesc, langCodeMap[panelLang])              }
             >
               Phát lại
             </button>
@@ -454,7 +498,7 @@ onClick={() => navigate("/login")}
 
         <div className="amui-playing">
           <span>ĐANG PHÁT</span>
-          <strong>{shop?.moTa || "Đang tải mô tả..."}</strong>
+          <strong>{shop?.ten}</strong>
         </div>
 
 <button 
