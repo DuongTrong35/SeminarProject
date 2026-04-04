@@ -1,6 +1,6 @@
 import "./Login.css";
-import logo from "../../assets/images/logodn.png";
-import mhdn from "../../assets/images/mhđn.jpg";
+import logo from "../../assets/images/LogoVK.jpg";
+import mhdn from "../../assets/images/BG_Login.png";
 import Navbar from "../Navbar";
 
 import { useState } from "react";
@@ -42,7 +42,7 @@ function Login() {
 
       if (data.role === "STORE") navigate("/store/home");
       else if (data.role === "ADMIN") navigate("/admin");
-      else navigate("/homeuse");
+      else navigate("/mhuser");
 
     } catch (error) {
       alert("Lỗi kết nối server!");
@@ -86,20 +86,20 @@ function Login() {
       <div className="Container" style={{ backgroundImage: `url(${mhdn})` }}>
         <div className="login-wrapper">
           <div className="custom-card p-4">
-            <div className="text-center mb-3">
+            <div className="login-logo">
               <img src={logo} alt="logo" width="70" />
             </div>
 
             {!isRegister ? (
               /* ================= FORM ĐĂNG NHẬP ================= */
               <>
-                <div className="text-center mb-4"><h4>Đăng nhập Konoha Market</h4></div>
+                <div className="login-textTitle"><h4>Log in</h4></div>
                 <form onSubmit={handleLogin}>
-                  <div className="mb-3 input-group">
+                  <div className="input-group login-input-group">
                     <span className="input-group-text"><i className="fa fa-user"></i></span>
                     <input type="text" className="form-control" placeholder="Username" value={taikhoan} onChange={(e) => setTaikhoan(e.target.value)} required/>
                   </div>
-                  <div className="mb-3 input-group">
+                  <div className="input-group login-input-group">
                     <span className="input-group-text"><i className="fa fa-key"></i></span>
                     <input type="password" className="form-control" placeholder="Password" value={matkhau} onChange={(e) => setMatkhau(e.target.value)} required/>
                   </div>
@@ -112,9 +112,9 @@ function Login() {
             ) : (
               /* ================= FORM ĐĂNG KÝ (Rút gọn) ================= */
               <>
-                <div className="text-center mb-4"><h4>Đăng ký Konoha Market</h4></div>
+                <div className="login-textTitle"><h4>Create your Account</h4></div>
                 <form onSubmit={handleRegister}>
-                  <div className="mb-3 input-group">
+                  <div className="input-group login-input-group">
                     <span className="input-group-text"><i className="fa fa-id-badge"></i></span>
                     <select className="select-role" value={regRole} onChange={(e) => setRegRole(e.target.value)}>
                       <option value="USER">Người dùng (Khách hàng)</option>
@@ -122,12 +122,12 @@ function Login() {
                     </select>
                   </div>
 
-                  <div className="mb-3 input-group">
+                  <div className="input-group login-input-group">
                     <span className="input-group-text"><i className="fa fa-user"></i></span>
                     <input type="text" className="form-control" placeholder="Username" value={regTaikhoan} onChange={(e) => setRegTaikhoan(e.target.value)} required />
                   </div>
                   
-                  <div className="mb-3 input-group">
+                  <div className="input-group login-input-group">
                     <span className="input-group-text"><i className="fa fa-key"></i></span>
                     <input type="password" className="form-control" placeholder="Password" value={regMatkhau} onChange={(e) => setRegMatkhau(e.target.value)} required />
                   </div>

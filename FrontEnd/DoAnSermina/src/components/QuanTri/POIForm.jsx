@@ -132,7 +132,7 @@ function POIForm({ isOpen, onClose, onSave }) {
         },
         body: JSON.stringify({
           id: form.id || null, // ✅ QUAN TRỌNG
-          iduser: user?.iduser,
+iduser: user?.id,
           ten: form.name,
           danhmuc: form.category,
           diaChi: form.address,

@@ -141,10 +141,10 @@ const AddTour = () => {
                             <label style={{ display: 'block', marginBottom: '5px' }}>Mô tả: </label>
                             <textarea name="moTa" required onChange={handleInputChange} style={{ width: '100%', padding: '8px', minHeight: '80px' }} />
                         </div>
-                        <div>
+                        {/* <div>
                             <label style={{ display: 'block', marginBottom: '5px' }}>Giá tiền (VNĐ): </label>
                             <input type="number" name="gia" required onChange={handleInputChange} style={{ width: '100%', padding: '8px' }} />
-                        </div>
+                        </div> */}
                     </fieldset>
 
                     <fieldset style={{ marginBottom: '20px', border: '1px solid #ddd', padding: '15px' }}>

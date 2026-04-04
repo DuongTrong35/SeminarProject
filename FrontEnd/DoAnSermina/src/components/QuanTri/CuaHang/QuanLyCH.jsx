@@ -7,6 +7,8 @@ const API_URL = "http://localhost:8080/api/cuahang";
 
 const navItems = [
   { to: "/admin", label: "Trang chủ", icon: "🏠" },
+      { to: "/mhad", label: "Thêm POI", icon: "🔍" },
+
   { to: "/admin/qlch", label: "Quản lý cửa hàng", icon: "🏪" },
   { to: "/admin/tours", label: "Quản lý Tour", icon: "📍" },
   { to: "/admin/hopdong", label: "Duyệt cửa hàng", icon: "📝" },
@@ -131,9 +133,9 @@ function QuanLyCH() {
       <aside className="cuahang-sidebar">
         <div className="cuahang-user">
           <div className="cuahang-avatar">
-            {user?.taikhoan?.[0] || "A"}
+            {user?.username?.[0]?.toUpperCase()|| "A"}
           </div>
-          <div>{user?.taikhoan}</div>
+          <div>{user?.username}</div>
         </div>
 
         {navItems.map((item) => (
