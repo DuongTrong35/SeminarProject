@@ -11,10 +11,14 @@
   height: 100vh;
   background: #fff;
 }
-
+.amui-container {
+  position: relative;
+  height: 100vh;
+  overflow: hidden; /* QUAN TRỌNG */
+}
 /* Map */
 .amui-map {
-  height: 45%;
+  height: 100vh; /* FULL màn hình */
   background: #ddd; /* tạm, sau bạn thay map thật */
   position: relative;
 }
@@ -32,11 +36,22 @@
 
 /* Panel */
 .amui-panel {
-  flex: 1;
-  background: #f6f8f7;
-  padding: 20px;
+  position: absolute;
+  bottom: 0!important; /* ÉP DÍNH BÓNG VỚI ĐÁY */
+  left: 0;
+  width: 100%;
+
+  height: 60%; /* hoặc 70% tùy bạn */
+
+  background: #ffffff;
+  padding: 16px;
+
   border-top-left-radius: 20px;
   border-top-right-radius: 20px;
+
+  box-shadow: 0 -4px 20px rgba(0,0,0,0.15); /* 🔥 thêm cái này */
+
+  z-index: 1000;
 }
 
 /* Header */
@@ -379,3 +394,18 @@
 .amui-back-floating:hover {
   background: #eee;
 }
+.amui-panel {
+  transition: all 0.4s ease;
+}
+
+/* Panel mở */
+.amui-panel.expanded {
+  height: 60%;
+}
+
+/* Panel thu nhỏ */
+.amui-panel.collapsed {
+  height: 80px;
+  overflow: hidden;
+}
+

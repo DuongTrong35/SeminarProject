@@ -14,9 +14,8 @@
 
 /* Map */
 .amui-map {
-  height: 45%;
-  background: #ddd; /* tạm, sau bạn thay map thật */
   position: relative;
+  height: 100vh; /* full màn hình */
 }
 
 .amui-map-overlay {
@@ -227,10 +226,11 @@
 
 
 .amui-controller {
-  position: absolute;
-  bottom: 100px;
-  left: 20px;
-  z-index: 1000;
+  position: fixed; /* QUAN TRỌNG luôn */
+  bottom: 480px;   /* chỉnh cao lên chút cho đẹp */
+  left: 100px;
+
+  z-index: 3000;   /* > 1500 là được */
 
   display: grid;
   grid-template-columns: 50px 50px 50px;
@@ -270,4 +270,128 @@ position: absolute;
 
 .amui-back-floating:hover {
   background: #eee;
+}
+
+/* Bottom Navigation */
+.amui-bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+
+  height: 70px;
+  background: #fff;
+
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+
+  border-top: 1px solid #eee;
+  z-index: 2000;
+}
+
+.amui-nav-item {
+  text-align: center;
+  font-size: 12px;
+  color: #888;
+  cursor: pointer;
+}
+
+.amui-nav-item span {
+  display: block;
+  font-size: 20px;
+  margin-bottom: 4px;
+}
+
+.amui-nav-item.active {
+  color: orange;
+  font-weight: 600;
+}
+
+.amui-panel {
+  position: fixed;
+  bottom: 70px; /* tránh đè footer */
+  left: 0;
+  width: 100%;
+
+  max-height: 80%;
+  overflow-y: auto;
+
+  background: #f6f8f7;
+  padding: 20px;
+
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+
+  z-index: 1500;
+
+  box-shadow: 0 -4px 10px rgba(0,0,0,0.15);
+}
+
+.amui-close-btn {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+
+  border: none;
+  background: #fff;
+  border-radius: 50%;
+
+  width: 30px;
+  height: 30px;
+
+  font-size: 16px;
+  cursor: pointer;
+
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+}
+
+.amui-close-btn:hover {
+  background: #eee;
+}
+
+/* ⭐ BOTTOM RIGHT GROUP */
+.amui-bottom-right-controls {
+  position: absolute;
+  right: 16px;
+
+  /* 👇 chỉnh cái này để nằm trên panel */
+  bottom: 120px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+
+  z-index: 1000;
+}
+
+/* Nút vuông giống hình bạn gửi */
+.amui-btn-icon {
+  width: 56px;
+  height: 56px;
+
+  border: none;
+  border-radius: 16px;
+
+  background: #fff;
+  font-size: 22px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+  cursor: pointer;
+
+  transition: 0.2s;
+}
+
+/* Nút active (màu cam) */
+.amui-btn-icon.active {
+  background: #ff7a00;
+  color: white;
+}
+
+.amui-btn-icon:hover {
+  transform: scale(1.05);
 }

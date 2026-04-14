@@ -31,7 +31,8 @@ import QuanLyTour from './components/QuanTri/Tour/QuanLyTour';
 import AddTour from './components/QuanTri/Tour/AddTour';
 import EditTour from './components/QuanTri/Tour/EditTour';
 import DanhSachTour from './components/NguoiDung/DanhSachTour';
-
+import SettingsUI from "./components/NguoiDung/SettingsUI";
+import QRScannerUI from "./components/NguoiDung/QRScannerUI";
 
 import "./index.css";
 // import "bootstrap/dist/css/bootstrap.min.css";
@@ -106,6 +107,8 @@ function AppRouter() {
         <Route path="/mhad" element={<Mhad />} />
           <Route path="/mhuser" element={<MHuser />} />
           <Route path="/mhuserfree" element={<MHuserfree />} />
+          <Route path="/settings" element={<SettingsUI />} />
+          <Route path="/scan" element={<QRScannerUI />} />
 
         {/* <Route path="/mhtest" element={<Dashboard />} /> */}
 
