@@ -22,7 +22,7 @@ public class TranslateController {
             String url = "https://translate.googleapis.com/translate_a/single?client=gtx&sl=auto&tl={to}&dt=t&q={text}";
 
             RestTemplate restTemplate = new RestTemplate();
-            
+
             // 2. ÉP SPRING BOOT ĐỌC JSON BẰNG LIST CHUẨN CỦA JAVA (Né thư viện ngoài)
             List<?> response = restTemplate.getForObject(url, List.class, to, text);
 
