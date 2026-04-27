@@ -4,7 +4,7 @@ import axios from "axios";
 import { Circle } from "react-leaflet";
 import { useNavigate } from "react-router-dom";
 import { useMapEvents } from "react-leaflet";
-
+import { useLocation } from "react-router-dom";
 function MapClickHandler({ setPosition }) {
   useMapEvents({
     click(e) {
@@ -69,7 +69,8 @@ const langCodeMap = {
 
 function AudioMapFreeUI() {
   const navigate = useNavigate();
-
+  const location = useLocation();
+  const shopIdFromQR = location.state?.shopId;
   // TẤT CẢ CÁC STATE NẰM Ở ĐÂY
   // const [position, setPosition] = useState([10.761992635455506, 106.7022316837637]);
   const [position, setPosition] = useState([10.76, 106.7]);
@@ -85,7 +86,7 @@ function AudioMapFreeUI() {
     code: "VN",
     label: "Tiếng Việt",
   });
-
+const [isFromQR, setIsFromQR] = useState(false);
   // STATE CHO ĐA NGÔN NGỮ
   const [panelLang, setPanelLang] = useState("Tiếng Việt");
   const [displayTitle, setDisplayTitle] = useState("");
@@ -96,12 +97,15 @@ function AudioMapFreeUI() {
   const moveDown = () => setPosition([position[0] - moveStep, position[1]]);
   const moveLeft = () => setPosition([position[0], position[1] - moveStep]);
   const moveRight = () => setPosition([position[0], position[1] + moveStep]);
+
   const allShops = shops;
   const shopsInRange = shops.filter(
     (s) =>
       getDistance(position[0], position[1], s.lat, s.lng) <= s.bankinh / 1000
   );
   useEffect(() => {
+      if (isFromQR) return; // 🔥 CHẶN
+
     if (!shopsInRange.length) {
       setSelectedShop(null);
       return;
@@ -136,33 +140,33 @@ function AudioMapFreeUI() {
     }, 500);
   };
   // lay vi trí dau tien khi vao map
-//   useEffect(() => {
-//   if (!navigator.geolocation) {
-//     alert("Trình duyệt không hỗ trợ GPS");
-//     return;
-//   }
+  //   useEffect(() => {
+  //   if (!navigator.geolocation) {
+  //     alert("Trình duyệt không hỗ trợ GPS");
+  //     return;
+  //   }
 
-//   const watchId = navigator.geolocation.watchPosition(
-//     (pos) => {
-//       console.log("📍 GPS:", pos.coords);
+  //   const watchId = navigator.geolocation.watchPosition(
+  //     (pos) => {
+  //       console.log("📍 GPS:", pos.coords);
 
-//       setPosition([
-//         pos.coords.latitude,
-//         pos.coords.longitude
-//       ]);
-//     },
-//     (err) => {
-//       console.error(err);
-//     },
-//     {
-//       enableHighAccuracy: true,
-//       maximumAge: 0,
-//       timeout: 10000
-//     }
-//   );
+  //       setPosition([
+  //         pos.coords.latitude,
+  //         pos.coords.longitude
+  //       ]);
+  //     },
+  //     (err) => {
+  //       console.error(err);
+  //     },
+  //     {
+  //       enableHighAccuracy: true,
+  //       maximumAge: 0,
+  //       timeout: 10000
+  //     }
+  //   );
 
-//   return () => navigator.geolocation.clearWatch(watchId);
-// }, []);
+  //   return () => navigator.geolocation.clearWatch(watchId);
+  // }, []);
   useEffect(() => {
     window.speechSynthesis.getVoices();
     window.speechSynthesis.onvoiceschanged = () =>
@@ -176,10 +180,27 @@ function AudioMapFreeUI() {
       .then((res) => setShops(res.data))
       .catch((err) => console.error(err));
   }, []);
+  useEffect(() => {
+    if (!shopIdFromQR || shops.length === 0) return;
 
+    console.log("QR ID:", shopIdFromQR);
+    console.log("Shops:", shops);
+
+const foundShop = shops.find((s) => String(s.id) === shopIdFromQR);
+    if (foundShop) {
+  setIsFromQR(true); // ✅ phải đặt trước
+
+  setPosition([foundShop.lat, foundShop.lng]);
+  setSelectedShop(foundShop);
+  setIsPanelOpen(true);
+}
+else {
+      console.log("❌ Không tìm thấy shop");
+    }
+  }, [shopIdFromQR, shops]);
   // LẤY ĐƯỜNG ĐI TỪ OSRM
   useEffect(() => {
-    if (!selectedShop) return;
+  if (!selectedShop || isFromQR) return; // 🔥 THÊM DÒNG NÀY
     const url = `https://router.project-project-osrm.org/route/v1/driving/${position[1]},${position[0]};${selectedShop.lng},${selectedShop.lat}?overview=full&geometries=geojson`;
     fetch(url)
       .then((res) => {
@@ -213,29 +234,30 @@ function AudioMapFreeUI() {
       getDistance(position[0], position[1], s.lat, s.lng) <= s.bankinh / 1000
   );
   useEffect(() => {
-  if (!visibleShops.length) {
-    setSelectedShop(null);
-    return;
-  }
+      if (isFromQR) return; // 🔥 CHẶN
 
-  let nearest = visibleShops[0];
-  let minDistance = Infinity;
-
-  visibleShops.forEach((s) => {
-    const d = getDistance(position[0], position[1], s.lat, s.lng);
-    if (d < minDistance) {
-      minDistance = d;
-      nearest = s;
+    if (!visibleShops.length) {
+      setSelectedShop(null);
+      return;
     }
-  });
 
-  // 👇 CHỈ mở panel nếu đổi shop
-  if (!selectedShop || selectedShop.id !== nearest.id) {
-    setSelectedShop(nearest);
-    setIsPanelOpen(true); // 👈 chỉ mở khi shop mới
-  }
+    let nearest = visibleShops[0];
+    let minDistance = Infinity;
 
-}, [position, visibleShops]);
+    visibleShops.forEach((s) => {
+      const d = getDistance(position[0], position[1], s.lat, s.lng);
+      if (d < minDistance) {
+        minDistance = d;
+        nearest = s;
+      }
+    });
+
+    // 👇 CHỈ mở panel nếu đổi shop
+    if (!selectedShop || selectedShop.id !== nearest.id) {
+      setSelectedShop(nearest);
+      setIsPanelOpen(true); // 👈 chỉ mở khi shop mới
+    }
+  }, [position, visibleShops]);
 
   const distance =
     selectedShop &&
@@ -331,32 +353,28 @@ function AudioMapFreeUI() {
     setIsSpeaking(false);
   };
 
-
- const handleLocateUser = () => {
+  const handleLocateUser = () => {
     if (!navigator.geolocation) {
-    alert("Trình duyệt không hỗ trợ GPS");
-    return;
-  }
-
-  const watchId = navigator.geolocation.watchPosition(
-    (pos) => {
-      console.log("📍 GPS:", pos.coords);
-
-      setPosition([
-        pos.coords.latitude,
-        pos.coords.longitude
-      ]);
-    },
-    (err) => {
-      console.error(err);
-    },
-    {
-      enableHighAccuracy: true,
-      maximumAge: 0,
-      timeout: 10000
+      alert("Trình duyệt không hỗ trợ GPS");
+      return;
     }
-  );
-};
+
+    const watchId = navigator.geolocation.watchPosition(
+      (pos) => {
+        console.log("📍 GPS:", pos.coords);
+
+        setPosition([pos.coords.latitude, pos.coords.longitude]);
+      },
+      (err) => {
+        console.error(err);
+      },
+      {
+        enableHighAccuracy: true,
+        maximumAge: 0,
+        timeout: 10000,
+      }
+    );
+  };
   return (
     <div className="amui-container">
       <div className="amui-map">
@@ -400,16 +418,18 @@ function AudioMapFreeUI() {
           {route.length > 0 && <Polyline positions={route} color="blue" />}
         </MapContainer>
         <div className="amui-map-overlay">GPS đang bật</div>
-        <div className="amui-bottom-right-controls" style={{zIndex:2000}}>
-  <button className="amui-btn-icon" onClick={handleLocateUser}>
-  🎯
-</button>
+        <div className="amui-bottom-right-controls" style={{ zIndex: 2000 }}>
+          <button className="amui-btn-icon" onClick={handleLocateUser}>
+            🎯
+          </button>
 
-  <button className="amui-btn-icon active"   onClick={() => navigate("/scan")}
->
-    🔳
-  </button>
-</div>
+          <button
+            className="amui-btn-icon active"
+            onClick={() => navigate("/scan")}
+          >
+            🔳
+          </button>
+        </div>
         <button
           className="amui-back-floating"
           onClick={() => navigate("/mhuser")}
@@ -444,8 +464,8 @@ function AudioMapFreeUI() {
         </div>
       </div>
 
-     {selectedShop && isPanelOpen && (
-  <div className="amui-panel">
+      {selectedShop && isPanelOpen && (
+        <div className="amui-panel">
           <button
             className="amui-close-btn"
             onClick={() => {
@@ -523,15 +543,13 @@ function AudioMapFreeUI() {
           <p>LỘ TRÌNH</p>
         </div> */}
 
-        
-
-       <div 
-  className="amui-nav-item active"
-  onClick={() => navigate("/settings")}
->
-  <span>👤</span>
-  <p>TÔI</p>
-</div>
+        <div
+          className="amui-nav-item active"
+          onClick={() => navigate("/settings")}
+        >
+          <span>👤</span>
+          <p>TÔI</p>
+        </div>
       </div>
     </div>
   );

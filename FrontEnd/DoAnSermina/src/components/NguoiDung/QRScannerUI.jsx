@@ -7,8 +7,8 @@ function QRScannerUI() {
   const navigate = useNavigate();
   const [isCameraOn, setIsCameraOn] = useState(false);
   const scannerRef = useRef(null);
-const [scanSuccess, setScanSuccess] = useState(false);
-const [scanText, setScanText] = useState("");
+  const [scanSuccess, setScanSuccess] = useState(false);
+  const [scanText, setScanText] = useState("");
 
   useEffect(() => {
     if (!isCameraOn) return;
@@ -23,7 +23,7 @@ const [scanText, setScanText] = useState("");
           fps: 10,
           qrbox: undefined,
         },
-       (decodedText) => {
+        (decodedText) => {
   setScanText(decodedText);
   setScanSuccess(true);
 
@@ -32,43 +32,50 @@ const [scanText, setScanText] = useState("");
   }
 
   setIsCameraOn(false);
+
+  // 🚀 chuyển trang + gửi shopId
+  setTimeout(() => {
+    navigate("/mhuserfree", {
+      state: { shopId: decodedText }
+    });
+  }, 1000);
 },
         () => {}
       )
       .catch((err) => console.error(err));
 
     return () => {
-  if (scannerRef.current) {
-    try {
-      scannerRef.current.stop();
-    } catch (e) {}
-  }
-};
+      if (scannerRef.current) {
+        try {
+          scannerRef.current.stop();
+        } catch (e) {}
+      }
+    };
   }, [isCameraOn]);
 
-  useEffect(() => {
-  if (!isCameraOn) return;
+  // useEffect(() => {
+  //   if (!isCameraOn) return;
 
-  const timeout = setTimeout(() => {
-    const scanner = new Html5Qrcode("reader");
-    scannerRef.current = scanner;
+  //   const timeout = setTimeout(() => {
+  //     const scanner = new Html5Qrcode("reader");
+  //     scannerRef.current = scanner;
 
-    scanner.start(
-      { facingMode: "environment" },
-      { fps: 10 },
-      (decodedText) => {
-        setScanText(decodedText);
-        setScanSuccess(true);
+  //     scanner.start(
+  //       { facingMode: "environment" },
+  //       { fps: 10 },
+  //       (decodedText) => {
+  //         setScanText(decodedText);
+  //         setScanSuccess(true);
 
-        scanner.stop().catch(() => {});
-        setIsCameraOn(false);
-      },
-      () => {}
-    );
-  }, 300); // 🔥 delay nhẹ
+  //         scanner.stop().catch(() => {});
+  //         setIsCameraOn(false);
+  //       },
+  //       () => {}
+  //     );
+  //   }, 300); // 🔥 delay nhẹ
 
-  return () => clearTimeout(timeout);
-}, [isCameraOn]);
+  //   return () => clearTimeout(timeout);
+  // }, [isCameraOn]);
   return (
     <div className="qr-container">
       {/* CAMERA */}
@@ -77,14 +84,14 @@ const [scanText, setScanText] = useState("");
       {/* OVERLAY */}
       <div className="qr-overlay">
         {scanSuccess && (
-  <div className="qr-success">
-    <div className="qr-success-box">
-      <h3>✅ Quét thành công</h3>
-      <p>{scanText}</p>
-      <button onClick={() => setScanSuccess(false)}>OK</button>
-    </div>
-  </div>
-)}
+          <div className="qr-success">
+            <div className="qr-success-box">
+              <h3>✅ Quét thành công</h3>
+              <p>{scanText}</p>
+              <button onClick={() => setScanSuccess(false)}>OK</button>
+            </div>
+          </div>
+        )}
         {/* HEADER */}
         <div className="qr-header" onClick={() => navigate(-1)}>
           ← Hủy
